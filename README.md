@@ -4,9 +4,9 @@
 
 Possible ROS packages:
 
-    - PX4
-    - Webots
+- PX4
+- Webots
 
 ## Extended Kalman Filter
 
-Using FilterPy Python package
+Using [FilterPy](https://filterpy.readthedocs.io/en/latest/) Python package
