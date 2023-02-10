@@ -6,6 +6,7 @@ Possible ROS packages:
 
 - PX4
 - Webots
+- DJI Mavic 2 PRO
 
 ## Extended Kalman Filter
 
