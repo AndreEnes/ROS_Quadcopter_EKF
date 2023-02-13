@@ -1,12 +1,13 @@
 # ROS_Quadcopter_EKF
 
+Using ROS **noetic**
+
 ## Quadcopter simulation
 
-Possible ROS packages:
-
-- PX4
+- PX4 (meh, doesn't work with ROS noetic)
 - Webots
 - DJI Mavic 2 PRO
+- Crazyflie
 
 ## DJI Mavic 2 PRO
 
@@ -15,6 +16,11 @@ Possible ROS packages:
 - Controller can be a rosnode
 - Obtain position bsofjnfmsdjnfksndfjksdkfnsdf
 
+
+## Crazyflie
+
+- Quadcopter
+- [Webots](https://cyberbotics.com/doc/guide/crazyflie)
 
 ## RF Beacon
 
