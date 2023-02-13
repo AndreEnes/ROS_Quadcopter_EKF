@@ -15,6 +15,12 @@ Possible ROS packages:
 - Controller can be a rosnode
 - Obtain position bsofjnfmsdjnfksndfjksdkfnsdf
 
+
+## RF Beacon
+
+- Place [emitter](https://www.cyberbotics.com/doc/reference/emitter?version=master&tab-language=c++) in Webots world
+- Place [receiver](https://www.cyberbotics.com/doc/reference/receiver?version=master) in quadcopter
+
 ## Extended Kalman Filter
 
 Using [FilterPy](https://filterpy.readthedocs.io/en/latest/) Python package
