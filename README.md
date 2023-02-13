@@ -8,6 +8,7 @@ Using ROS **noetic**
 - Webots
 - DJI Mavic 2 PRO
 - Crazyflie
+- [Standard ROS controller](http://docs.ros.org/en/noetic/api/webots_ros/html/index-msg.html) for Webots
 
 ## DJI Mavic 2 PRO
 
