@@ -9,6 +9,9 @@ Using ROS **noetic**
 - DJI Mavic 2 PRO
 - Crazyflie
 - [Standard ROS controller](http://docs.ros.org/en/noetic/api/webots_ros/html/index-msg.html) for Webots
+- [Examples](https://github.com/cyberbotics/webots_ros) ROS interactions with Webots
+- [Samples](http://wiki.ros.org/webots_ros/Tutorials/Sample%20Simulations) ROS with Webots
+- [Tutorial](https://cyberbotics.com/doc/guide/tutorial-9-using-ros) of using ROS with Webots
 
 ## DJI Mavic 2 PRO
 
