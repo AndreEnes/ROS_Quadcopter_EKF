@@ -1,0 +1,100 @@
+#VRML_SIM R2023a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/robots/gctronic/e-puck/protos/E-puck.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/floors/protos/Floor.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/animals/protos/Cow.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/apartment_structure/protos/Wall.proto"
+
+WorldInfo {
+  basicTimeStep 16
+}
+Viewpoint {
+  orientation 0.32690269608788824 -0.6619816789464201 -0.6744737830559084 5.716323984717759
+  position -1.719344262734466 -0.7450723581997958 0.8925181135204413
+}
+TexturedBackground {
+  texture "dusk"
+}
+TexturedBackgroundLight {
+}
+E-puck {
+  translation 0 0 0.02
+  controller "vacas"
+}
+Cow {
+  translation -0.742456 0.742456 0
+  rotation 0 0 1 0.785398
+}
+Cow {
+  translation 0.792061 -0.0187112 0
+  rotation 0 0 1 1.30899
+  name "cow(1)"
+}
+Floor {
+  size 3 3
+}
+Solid {
+  translation 0.2 0 0.2
+  children [
+    DEF BALL Shape {
+      appearance PBRAppearance {
+        roughness 1
+        metalness 0
+      }
+      geometry DEF BALL_GEOMETRY Sphere {
+        radius 0.05
+        subdivision 2
+      }
+    }
+  ]
+  boundingObject USE BALL_GEOMETRY
+  physics Physics {
+  }
+}
+Solid {
+  translation 0 0.23 0.16
+  children [
+    USE BALL
+  ]
+  name "solid(1)"
+  boundingObject USE BALL_GEOMETRY
+  physics Physics {
+  }
+}
+Solid {
+  translation 0 1.7 0.52
+  children [
+    DEF WALL_SHAPE Shape {
+      appearance PBRAppearance {
+        roughness 0.02
+        metalness 0.8
+        emissiveColor 0 1 0
+      }
+      geometry Box {
+        size 2 0.1 1
+      }
+    }
+  ]
+  name "solid(2)"
+  boundingObject USE WALL_SHAPE
+}
+Solid {
+  translation 0 -2.53 0.5
+  children [
+    USE WALL_SHAPE
+  ]
+  name "solid(3)"
+}
+Wall {
+  translation 0.3 0 0
+  rotation 0 0 1 -0.785395307179586
+  size 0.01 1 2.4
+}
+Wall {
+  translation 0.310212 0.406187 0
+  rotation 0 0 1 0.261803
+  name "wall(1)"
+  size 0.01 1 2.4
+}

@@ -1,0 +1,3 @@
+Tips:
+
+ctrl + alt + left-click + drag --> apply force to object
