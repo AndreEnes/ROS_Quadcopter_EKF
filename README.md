@@ -31,6 +31,17 @@ Using ROS **noetic**
 
 - Place [emitter](https://www.cyberbotics.com/doc/reference/emitter?version=master&tab-language=c++) in Webots world
 - Place [receiver](https://www.cyberbotics.com/doc/reference/receiver?version=master) in quadcopter
+- How to link ROS to this? Don't miss the next episode...
+
+### Receiver
+
+- use **signalStrengthNoise** parameter and **wb_receiver_get_signal_strength** function to determine distance to the beacon
+- **directionNoise** and **wb_receiver_get_emitter_direction** to get direction --> **explore this**; The noise is not dependent on the distance between emitter-receiver
+
+### Scenarios
+
+- Beacon blocked by object
+- Signal out of range
 
 ## Extended Kalman Filter
 
