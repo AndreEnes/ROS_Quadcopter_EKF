@@ -6,13 +6,23 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/animals/protos/Cow.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/apartment_structure/protos/Wall.proto"
 EXTERNPROTO "../protos/drone_modified.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/appearances/protos/Parquetry.proto"
 
 WorldInfo {
-  basicTimeStep 16
+  info [
+    "Drone flying over some cows"
+    "Try not to crash"
+  ]
+  title "Cow drone"
+  basicTimeStep 8
+  defaultDamping Damping {
+    linear 0.5
+    angular 0.5
+  }
 }
 Viewpoint {
-  orientation -0.2936150544040061 -0.31113271011021076 0.903873130769362 4.7507985888062025
-  position -1.8390286831868325 13.291059968025273 7.713436406606607
+  orientation -0.15019171661789302 -0.026651082586242335 0.9882976110748987 3.6445113403763734
+  position 11.230979918289036 6.807801207319613 4.043115607997142
 }
 TexturedBackground {
   texture "dusk"
@@ -41,6 +51,10 @@ Cow {
   name "cow(2)"
 }
 Floor {
+  size 400 400
+  tileSize 15 15
+  appearance Parquetry {
+  }
 }
 Wall {
   translation 0.3 0 0
@@ -54,7 +68,6 @@ Wall {
   size 0.01 1 2.4
 }
 drone_modified {
-  translation 1 2 0.11
-  rotation 0 1 0 4.692820414042842e-06
-  controller "mavic2pro_patrol"
+  translation 1 2 0.07
+  rotation 0 1 0 0
 }
