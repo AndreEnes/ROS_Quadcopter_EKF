@@ -23,8 +23,8 @@ WorldInfo {
   }
 }
 Viewpoint {
-  orientation 0.28160545505784673 -0.27415011661561667 0.9195325340852857 5.663438693858733
-  position -0.18144821630725794 19.487583011762403 2.334580198457808
+  orientation -0.07059096490681889 -0.14406947894157587 0.9870465545814072 3.80728884770084
+  position 26.96952637470528 23.004398768418277 5.52053843958218
   near 0.2
   follow "drone_modified"
   followSmoothness 0.2
@@ -110,7 +110,7 @@ Wall {
   size 0.01 1 2.4
 }
 drone_modified {
-  translation 1 2 0.07
+  translation 1 7.31 0.07
   rotation 0 1 0 0
   controller "mavic2pro_patrol"
 }
@@ -121,8 +121,8 @@ UBuilding {
   translation -32.5023 78.785 0
   rotation 0 0 1 -0.523595307179586
 }
-DEF BEACON_ROBOT Robot {
-  translation 13.82 15.82 0
+DEF BEACON_ROBOT_1 Robot {
+  translation 13.82 15.82 0.5
   children [
     Emitter {
       translation 0 0 0.51
@@ -165,6 +165,104 @@ DEF BEACON_ROBOT Robot {
       ]
     }
   ]
+  boundingObject USE BEACON_SOLID
+  physics Physics {
+  }
+}
+DEF BEACON_ROBOT_2 Robot {
+  translation 3.58 15.82 0.6
+  children [
+    Emitter {
+      translation 0 0 0.51
+      boundingObject Sphere {
+        radius 0.1
+      }
+      physics Physics {
+      }
+      channel 2
+    }
+    DEF BEACON_SOLID Group {
+      children [
+        Transform {
+          translation 0 0 0.5
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0 1 0
+                roughness 0.5
+                metalness 0.7
+              }
+              geometry Sphere {
+                radius 0.1
+                subdivision 2
+              }
+            }
+          ]
+        }
+        Shape {
+          appearance DEF BEACON_COLOR PBRAppearance {
+            baseColor 0 1 0
+            roughness 0.5
+            metalness 0.7
+          }
+          geometry Cylinder {
+            height 1
+            radius 0.1
+          }
+        }
+      ]
+    }
+  ]
+  name "robot(2)"
+  boundingObject USE BEACON_SOLID
+  physics Physics {
+  }
+}
+DEF BEACON_ROBOT_3 Robot {
+  translation 15.72 7.62 0.7
+  children [
+    Emitter {
+      translation 0 0 0.51
+      boundingObject Sphere {
+        radius 0.1
+      }
+      physics Physics {
+      }
+      channel 3
+    }
+    DEF BEACON_SOLID Group {
+      children [
+        Transform {
+          translation 0 0 0.5
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0 1 0
+                roughness 0.5
+                metalness 0.7
+              }
+              geometry Sphere {
+                radius 0.1
+                subdivision 2
+              }
+            }
+          ]
+        }
+        Shape {
+          appearance DEF BEACON_COLOR PBRAppearance {
+            baseColor 0 1 0
+            roughness 0.5
+            metalness 0.7
+          }
+          geometry Cylinder {
+            height 1
+            radius 0.1
+          }
+        }
+      ]
+    }
+  ]
+  name "robot(3)"
   boundingObject USE BEACON_SOLID
   physics Physics {
   }

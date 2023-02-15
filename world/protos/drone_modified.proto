@@ -66,6 +66,17 @@ Robot {
     }
     DEF INERTIAL_UNIT InertialUnit {
     }
+    DEF RECEIVER_ONE Receiver {
+      type                "radio"   # {"radio", "serial", "infra-red"}  
+      aperture            -1        # {-1, [0, 2*pi]}
+      channel             -1         # [-1, inf)
+      baudRate            -1        # {-1, [0, inf)}
+      byteSize            8         # [8, inf)
+      bufferSize          -1        # {-1, [0, inf)}
+      signalStrengthNoise 0         # [0, inf)
+      directionNoise      0         # [0, inf)
+      allowedChannels     [ ]       # [0, inf)
+    }
     DEF REAR_LEFT_HP_HELIX Propeller {
       shaftAxis 0 0 1
       centerOfThrust -0.177179 0.127453 -0.0320282

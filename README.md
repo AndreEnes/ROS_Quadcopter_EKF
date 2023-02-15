@@ -30,6 +30,8 @@ Using ROS **noetic**
 
 - Place [emitter](https://www.cyberbotics.com/doc/reference/emitter?version=master&tab-language=c++) in Webots world
 - Place [receiver](https://www.cyberbotics.com/doc/reference/receiver?version=master) in quadcopter
+- receiver channel: -1, get signal from every channel available
+- beacon channel: x + 1, x >= 0, know which signal is from which beacon
 - How to link ROS to this? Don't miss the next episode...
 
 ### Receiver
