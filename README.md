@@ -21,7 +21,6 @@ Using ROS **noetic**
 - Controller can be a rosnode
 - Obtain position bsofjnfmsdjnfksndfjksdkfnsdf
 
-
 ## Crazyflie
 
 - Quadcopter
