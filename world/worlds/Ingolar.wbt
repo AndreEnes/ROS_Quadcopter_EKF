@@ -5,14 +5,14 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/floors/protos/Floor.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/animals/protos/Cow.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/apartment_structure/protos/Wall.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/joints/protos/HingeJointWithBacklash.proto"
+EXTERNPROTO "../protos/drone_modified.proto"
 
 WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation 0.09059746482847587 -0.7455896140653866 -0.6602183175014769 5.745993754430912
-  position -4.496422190516737 -1.961860042932721 2.079649807216847
+  orientation -0.2936150544040061 -0.31113271011021076 0.903873130769362 4.7507985888062025
+  position -1.8390286831868325 13.291059968025273 7.713436406606607
 }
 TexturedBackground {
   texture "dusk"
@@ -24,9 +24,21 @@ Cow {
   rotation 0 0 1 0.785398
 }
 Cow {
+  translation -3.09712 1.79778 0
+  rotation 0 0 1 1.5708
+  scale 2.5
+  name "cow(3)"
+}
+Cow {
   translation 0.792061 -0.0187112 0
   rotation 0 0 1 1.30899
   name "cow(1)"
+}
+Cow {
+  translation 2.93646 -0.593311 0
+  rotation 0 0 1 1.30899
+  scale 2
+  name "cow(2)"
 }
 Floor {
 }
@@ -41,33 +53,8 @@ Wall {
   name "wall(1)"
   size 0.01 1 2.4
 }
-Robot {
-  children [
-    Shape {
-      geometry Box {
-        size 0.1 0.1 0.1
-      }
-    }
-    HingeJointWithBacklash {
-      endPoint Solid {
-      }
-    }
-    HingeJointWithBacklash {
-      endPoint Solid {
-      }
-    }
-    HingeJointWithBacklash {
-      endPoint Solid {
-      }
-    }
-    HingeJointWithBacklash {
-      endPoint Solid {
-      }
-    }
-  ]
-}
-
 drone_modified {
-  translation 1 2 0
-  rotation 0 0 0 0
+  translation 1 2 0.11
+  rotation 0 1 0 4.692820414042842e-06
+  controller "mavic2pro_patrol"
 }

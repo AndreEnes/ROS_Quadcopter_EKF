@@ -4,8 +4,8 @@
 # documentation url: https://cyberbotics.com/doc/guide/mavic-2-pro
 # A quadcopter drone mounted with a motorized camera by the DJI company.
 
-EXTERNPROTO "webots://projects/appearances/protos/GlossyPaint.proto"
-EXTERNPROTO "webots://projects/appearances/protos/MattePaint.proto"
+EXTERNPROTO "../protos/GlossyPaint.proto"
+EXTERNPROTO "../protos/MattePaint.proto"
 
 PROTO drone_modified [
   field SFVec3f    translation         0 0 0                               # Is `Transform.translation`.
@@ -36,7 +36,7 @@ Robot {
         roughness 0.8
       }
       geometry Mesh {
-        url "Mavic2Pro/meshes/body.obj"
+        url "meshes/Mavic2Pro/body.obj"
       }
     }
     Shape {
@@ -44,7 +44,7 @@ Robot {
         roughness 0.5
       }
       geometry Mesh {
-        url "Mavic2Pro/meshes/body_metal_parts.obj"
+        url "meshes/Mavic2Pro/body_metal_parts.obj"
       }
     }
     Shape {
@@ -55,7 +55,7 @@ Robot {
         metalness 0
       }
       geometry Mesh {
-        url "Mavic2Pro/meshes/body_lenses.obj"
+        url "meshes/Mavic2Pro/body_lenses.obj"
       }
     }
     DEF COMPASS Compass {
@@ -83,7 +83,7 @@ Robot {
           Shape {
             appearance USE METAL_APPEARANCE
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_a_joint.obj"
+              url "meshes/Mavic2Pro/helix_a_joint.obj"
             }
           }
           Shape {
@@ -91,7 +91,7 @@ Robot {
               baseColor 0.1 0.1 0.1
             }
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_a_plates.obj"
+              url "meshes/Mavic2Pro/helix_a_plates.obj"
             }
           }
           Transform {
@@ -101,7 +101,7 @@ Robot {
                 appearance PBRAppearance {
                   baseColor 0.5 0.5 0.5
                   baseColorMap ImageTexture {
-                    url "Mavic2Pro/textures/mavic_fast_helix.png"
+                    url "textures/Mavic2Pro/mavic_fast_helix.png"
                   }
                   metalness 0
                   roughness 0
@@ -139,13 +139,13 @@ Robot {
           Shape {
             appearance USE GREY_PLASTIC
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_a.obj"
+              url "meshes/Mavic2Pro/helix_a.obj"
             }
           }
           Shape {
             appearance USE METAL_APPEARANCE
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_a_joint.obj"
+              url "meshes/Mavic2Pro/helix_a_joint.obj"
             }
           }
           Shape {
@@ -153,7 +153,7 @@ Robot {
               baseColor 0.1 0.1 0.1
             }
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_a_plates.obj"
+              url "meshes/Mavic2Pro/helix_a_plates.obj"
             }
           }
         ]
@@ -203,7 +203,7 @@ Robot {
           Shape {
             appearance USE METAL_APPEARANCE
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_b_joint.obj"
+              url "meshes/Mavic2Pro/helix_b_joint.obj"
             }
           }
           Shape {
@@ -211,7 +211,7 @@ Robot {
               baseColor 0.1 0.1 0.1
             }
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_b_plates.obj"
+              url "meshes/Mavic2Pro/helix_b_plates.obj"
             }
           }
           Transform {
@@ -221,7 +221,7 @@ Robot {
                 appearance PBRAppearance {
                   baseColor 0.5 0.5 0.5
                   baseColorMap ImageTexture {
-                    url "Mavic2Pro/textures/mavic_fast_helix.png"
+                    url "textures/Mavic2Pro/mavic_fast_helix.png"
                   }
                   metalness 0
                   roughness 0
@@ -261,13 +261,13 @@ Robot {
               baseColor 0.5 0.5 0.5
             }
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_b.obj"
+              url "meshes/Mavic2Pro/helix_b.obj"
             }
           }
           Shape {
             appearance USE METAL_APPEARANCE
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_b_joint.obj"
+              url "meshes/Mavic2Pro/helix_b_joint.obj"
             }
           }
           Shape {
@@ -275,7 +275,7 @@ Robot {
               baseColor 0.1 0.1 0.1
             }
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_b_plates.obj"
+              url "meshes/Mavic2Pro/helix_b_plates.obj"
             }
           }
         ]
@@ -325,7 +325,7 @@ Robot {
           Shape {
             appearance USE METAL_APPEARANCE
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_a_joint.obj"
+              url "meshes/Mavic2Pro/helix_a_joint.obj"
             }
           }
           Shape {
@@ -333,7 +333,7 @@ Robot {
               baseColor 0.1 0.1 0.1
             }
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_a_plates.obj"
+              url "meshes/Mavic2Pro/helix_a_plates.obj"
             }
           }
           Transform {
@@ -343,7 +343,7 @@ Robot {
                 appearance PBRAppearance {
                   baseColor 0.5 0.5 0.5
                   baseColorMap ImageTexture {
-                    url "Mavic2Pro/textures/mavic_fast_helix.png"
+                    url "textures/Mavic2Pro/mavic_fast_helix.png"
                   }
                   metalness 0
                   roughness 0
@@ -383,13 +383,13 @@ Robot {
               baseColor 0.5 0.5 0.5
             }
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_a.obj"
+              url "meshes/Mavic2Pro/helix_a.obj"
             }
           }
           Shape {
             appearance USE METAL_APPEARANCE
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_a_joint.obj"
+              url "meshes/Mavic2Pro/helix_a_joint.obj"
             }
           }
           Shape {
@@ -397,7 +397,7 @@ Robot {
               baseColor 0.1 0.1 0.1
             }
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_a_plates.obj"
+              url "meshes/Mavic2Pro/helix_a_plates.obj"
             }
           }
         ]
@@ -452,7 +452,7 @@ Robot {
           Shape {
             appearance USE METAL_APPEARANCE
             geometry Mesh {
-              url "Mavic2Pro/meshes/camera_yaw.obj"
+              url "meshes/Mavic2Pro/camera_yaw.obj"
             }
           }
           DEF CAMERA_PITCH HingeJoint {
@@ -476,7 +476,7 @@ Robot {
                 Shape {
                   appearance USE METAL_APPEARANCE
                   geometry Mesh {
-                    url "Mavic2Pro/meshes/camera_pitch.obj"
+                    url "meshes/Mavic2Pro/camera_pitch.obj"
                   }
                 }
                 DEF CAMERA_ROLL HingeJoint {
@@ -500,13 +500,13 @@ Robot {
                       Shape {
                         appearance USE METAL_APPEARANCE
                         geometry Mesh {
-                          url "Mavic2Pro/meshes/camera_chassis.obj"
+                          url "meshes/Mavic2Pro/camera_chassis.obj"
                         }
                       }
                       Shape {
                         appearance USE GLASS
                         geometry Mesh {
-                          url "Mavic2Pro/meshes/camera_lens.obj"
+                          url "meshes/Mavic2Pro/camera_lens.obj"
                         }
                       }
                       DEF CAMERA_SLOT Transform {
@@ -572,7 +572,7 @@ Robot {
                 emissiveIntensity 50
               }
               geometry Mesh {
-                url "Mavic2Pro/meshes/front_led.obj"
+                url "meshes/Mavic2Pro/front_led.obj"
               }
             }
           ]
@@ -605,7 +605,7 @@ Robot {
                 emissiveIntensity 50
               }
               geometry Mesh {
-                url "Mavic2Pro/meshes/front_led.obj"
+                url "meshes/Mavic2Pro/front_led.obj"
               }
             }
           ]
@@ -642,7 +642,7 @@ Robot {
           Shape {
             appearance USE METAL_APPEARANCE
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_b_joint.obj"
+              url "meshes/Mavic2Pro/helix_b_joint.obj"
             }
           }
           Shape {
@@ -650,7 +650,7 @@ Robot {
               baseColor 0.1 0.1 0.1
             }
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_b_plates.obj"
+              url "meshes/Mavic2Pro/helix_b_plates.obj"
             }
           }
           Transform {
@@ -660,7 +660,7 @@ Robot {
                 appearance PBRAppearance {
                   baseColor 0.5 0.5 0.5
                   baseColorMap ImageTexture {
-                    url "Mavic2Pro/textures/mavic_fast_helix.png"
+                    url "textures/Mavic2Pro/mavic_fast_helix.png"
                   }
                   metalness 0
                   roughness 0
@@ -700,13 +700,13 @@ Robot {
               baseColor 0.5 0.5 0.5
             }
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_b.obj"
+              url "meshes/Mavic2Pro/helix_b.obj"
             }
           }
           Shape {
             appearance USE METAL_APPEARANCE
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_b_joint.obj"
+              url "meshes/Mavic2Pro/helix_b_joint.obj"
             }
           }
           Shape {
@@ -714,7 +714,7 @@ Robot {
               baseColor 0.1 0.1 0.1
             }
             geometry Mesh {
-              url "Mavic2Pro/meshes/helix_b_plates.obj"
+              url "meshes/Mavic2Pro/helix_b_plates.obj"
             }
           }
         ]
