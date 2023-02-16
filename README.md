@@ -50,6 +50,7 @@ Using ROS **noetic**
 - Revisit nodes, topics and services
 - Launch Webots
 - Connect to robot model
+- rviz
 
 ## Extended Kalman Filter
 
