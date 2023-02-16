@@ -43,6 +43,7 @@ Using ROS **noetic**
 
 - Beacon blocked by object
 - Signal out of range
+- Using a [Supervisor](https://cyberbotics.com/doc/guide/tutorial-8-the-supervisor?tab-language=python) to dynamically change the simulation environment
 
 ## Extended Kalman Filter
 
