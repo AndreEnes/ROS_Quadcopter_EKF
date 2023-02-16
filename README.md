@@ -45,6 +45,12 @@ Using ROS **noetic**
 - Signal out of range
 - Using a [Supervisor](https://cyberbotics.com/doc/guide/tutorial-8-the-supervisor?tab-language=python) to dynamically change the simulation environment
 
+## ROS Integration
+
+- Revisit nodes, topics and services
+- Launch Webots
+- Connect to robot model
+
 ## Extended Kalman Filter
 
 Using [FilterPy](https://filterpy.readthedocs.io/en/latest/) Python package
