@@ -51,6 +51,7 @@ Using ROS **noetic**
 - Launch Webots
 - Connect to robot model
 - rviz
+- Terrible documentation, yey. [ROS2](https://docs.ros.org/en/rolling/Tutorials/Advanced/Simulators/Webots.html) tutorial, hopefully it helps
 
 ## Extended Kalman Filter
 
