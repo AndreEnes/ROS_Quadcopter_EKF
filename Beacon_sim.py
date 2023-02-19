@@ -74,6 +74,11 @@ class Beacon_sim():
         #slant_dist = math.sqrt(self.pos**2 + self.alt**2)
         return np.array([[self.Beacons_dist[0],self.Beacons_dist[1],self.Beacons_dist[2],self.Beacons_dist_last[0],self.Beacons_dist_last[1],self.Beacons_dist_last[2]]]).T
 
+    def get_pos(self):
+        self.pos
+
+    def get_vel(self):
+        self.vel
 
 
 if __name__ == "__main__":

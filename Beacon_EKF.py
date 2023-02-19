@@ -1,11 +1,12 @@
 import numpy as np
-from numpy import array
+from numpy import array,asarray
 from filterpy.kalman import ExtendedKalmanFilter 
 import math
 import sympy
 import yaml
 from yaml.loader import SafeLoader
 from Beacon_sim import Beacon_sim
+import matplotlib.pyplot as plt
 
 
 def get_yaml_beacon(path = "/data/beacons.yaml"):
@@ -92,13 +93,13 @@ class Beacons_EKF():
         """
         Beacons_dist= []
         
-        Beacons_dist.append(math.sqrt((x[0][0] - self.Beacons[0]['x'])**2+(x[1][0] - self.Beacons[0]['y'])**2+(x[2][0] - self.Beacons[0]['z'])**2))
-        Beacons_dist.append(math.sqrt((x[0][0] - self.Beacons[1]['x'])**2+(x[1][0] - self.Beacons[1]['y'])**2+(x[2][0] - self.Beacons[1]['z'])**2))
-        Beacons_dist.append(math.sqrt((x[0][0] - self.Beacons[2]['x'])**2+(x[1][0] - self.Beacons[2]['y'])**2+(x[2][0] - self.Beacons[2]['z'])**2))
-        Beacons_dist.append(math.sqrt((x[0][0] -self.dt*x[3][0] - self.Beacons[0]['x'])**2+(x[1][0] -self.dt*x[4][0] - self.Beacons[0]['y'])**2+(x[2][0] -self.dt*x[5][0] - self.Beacons[0]['z'])**2))
-        Beacons_dist.append(math.sqrt((x[0][0] -self.dt*x[3][0] - self.Beacons[1]['x'])**2+(x[1][0] -self.dt*x[4][0] - self.Beacons[1]['y'])**2+(x[2][0] -self.dt*x[5][0] - self.Beacons[1]['z'])**2))
-        Beacons_dist.append(math.sqrt((x[0][0] -self.dt*x[3][0] - self.Beacons[2]['x'])**2+(x[1][0] -self.dt*x[4][0] - self.Beacons[2]['y'])**2+(x[2][0] -self.dt*x[5][0] - self.Beacons[2]['z'])**2))        
-        return Beacons_dist
+        Beacons_dist.append(math.sqrt((x[0] - self.Beacons[0]['x'])**2+(x[1] - self.Beacons[0]['y'])**2+(x[2]- self.Beacons[0]['z'])**2))
+        Beacons_dist.append(math.sqrt((x[0] - self.Beacons[1]['x'])**2+(x[1] - self.Beacons[1]['y'])**2+(x[2] - self.Beacons[1]['z'])**2))
+        Beacons_dist.append(math.sqrt((x[0] - self.Beacons[2]['x'])**2+(x[1] - self.Beacons[2]['y'])**2+(x[2] - self.Beacons[2]['z'])**2))
+        Beacons_dist.append(math.sqrt((x[0] -self.dt*x[3] - self.Beacons[0]['x'])**2+(x[1]-self.dt*x[4] - self.Beacons[0]['y'])**2+(x[2] -self.dt*x[5]- self.Beacons[0]['z'])**2))
+        Beacons_dist.append(math.sqrt((x[0] -self.dt*x[3] - self.Beacons[1]['x'])**2+(x[1] -self.dt*x[4] - self.Beacons[1]['y'])**2+(x[2] -self.dt*x[5] - self.Beacons[1]['z'])**2))
+        Beacons_dist.append(math.sqrt((x[0] -self.dt*x[3] - self.Beacons[2]['x'])**2+(x[1] -self.dt*x[4] - self.Beacons[2]['y'])**2+(x[2] -self.dt*x[5] - self.Beacons[2]['z'])**2))        
+        return array([Beacons_dist]).T
 
 
     def residual(self,a, b):
@@ -130,11 +131,30 @@ class Beacons_EKF():
 
 if __name__ == '__main__':
     dt = 0.2
+    xs, track = [], []
     EKF = Beacons_EKF(step_time=dt,init_position=[1.1,1.2,0.0])
     beacon = Beacon_sim(pos=[1.1,1.2,0.0],vel=[0.0,0.0,0.0],dt=dt)
     for i in range (int(20/dt)):
         z = beacon.update_position()
+        track.append((beacon.get_pos(), beacon.get_vel(), z))
         EKF.update(z=z)
+        xs.append(EKF.get_status())
         EKF.predict()
+    print("tranc")
+    print(track)
+    print("xs")
+    print(len(xs))
+    time = np.arange(0, len(xs)*dt, dt)
+    #plt.plot(xs,ys)
+    #xs = asarray(xs)
+    #track = asarray(track)
+    xs1 ,xs2, xs3= [],[],[]
+    for i in range(len(xs)):
+        xs1.append(xs[i][0][0])
+        xs2.append(xs[i][1][0])
+        xs3.append(xs[i][2][0])
+    plt.plot(xs1,time,xs2,time,xs3, time)
 
-    
+    plt.ylabel('some numbers')
+
+    plt.show()
