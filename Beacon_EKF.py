@@ -1,14 +1,11 @@
 import numpy as np
-from filterpy.kalman import KalmanFilter
-
-from filterpy.common import Q_discrete_white_noise
+from numpy import array
 from filterpy.kalman import ExtendedKalmanFilter 
-from numpy import eye, array, asarray,dot,sqrt
-import numpy as np
+import math
 import sympy
 import yaml
 from yaml.loader import SafeLoader
-import math
+
 
 def get_yaml_beacon(path = "/data/beacons.yaml"):
     print("get position of beacons")

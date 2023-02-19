@@ -23,6 +23,7 @@ class Beacon_sim():
         self.Beacons_dist =[0,0,0]
         self.dt = dt
         self.Beacons , self.Beacons_num = self.read_beacon_position()
+        print(self.Beacons)
         self.Beacons_dist[0] = math.sqrt((self.pos[0] - self.Beacons[0]['x'])**2+(self.pos[1] - self.Beacons[0]['y'])**2+(self.pos[2] - self.Beacons[0]['z'])**2)
         self.Beacons_dist[1] = math.sqrt((self.pos[0] - self.Beacons[1]['x'])**2+(self.pos[1] - self.Beacons[1]['y'])**2+(self.pos[2] - self.Beacons[1]['z'])**2)
         self.Beacons_dist[2] = math.sqrt((self.pos[0] - self.Beacons[2]['x'])**2+(self.pos[1] - self.Beacons[2]['y'])**2+(self.pos[2] - self.Beacons[2]['z'])**2)
