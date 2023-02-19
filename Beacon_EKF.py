@@ -1,0 +1,133 @@
+import numpy as np
+from filterpy.kalman import KalmanFilter
+
+from filterpy.common import Q_discrete_white_noise
+from filterpy.kalman import ExtendedKalmanFilter 
+from numpy import eye, array, asarray,dot,sqrt
+import numpy as np
+import sympy
+import yaml
+from yaml.loader import SafeLoader
+import math
+
+def get_yaml_beacon(path = "/data/beacons.yaml"):
+    print("get position of beacons")
+    if not (path is None):
+        with open(path, 'r') as f:
+            beacons = yaml.load(f, Loader=SafeLoader)
+            return beacons
+    else:
+        return None 
+
+class Beacons_EKF():
+    def __init__(self,init_position=[0,0,0], step_time = 0.2, q=5.0, r=0.2):
+        self.EKF = ExtendedKalmanFilter(dim_x=6, dim_z=6)
+        self.Beacons=[]
+        self.Beacons , self.Beacons_num = self.read_beacon_position()
+        self.dt = step_time
+        self.Beacons_speed = [0,0,0]
+
+        ####--------
+        x, y,z, x_vel,y_vel,z_vel  = sympy.symbols('x, y, z, x_vel,y_vel,z_vel')
+        self.subs = {x: 0, y: 0, z:0, x_vel:0, y_vel:0,z_vel:0}
+        self.px, self.py, self.pz, self.vx, self.vy, self.vz= x, y, z, x_vel,y_vel,z_vel  
+        #
+        equa_beacon1 = sympy.sqrt((x-self.Beacons[0]['x'])**2 + (y-self.Beacons[0]['y'])**2 + (z-self.Beacons[0]['z'])**2)
+        equa_beacon2 = sympy.sqrt((x-self.Beacons[1]['x'])**2 + (y-self.Beacons[1]['y'])**2 + (z-self.Beacons[1]['z'])**2)
+        equa_beacon3 = sympy.sqrt((x-self.Beacons[2]['x'])**2 + (y-self.Beacons[2]['y'])**2 + (z-self.Beacons[2]['z'])**2)
+
+        equa_beacon_vel1 = sympy.sqrt((x-self.Beacons[0]['x']-self.dt*x_vel)**2 + (y-self.Beacons[0]['y']-self.dt*y_vel)**2 + (z-self.Beacons[0]['z']-self.dt*z_vel)**2)
+        equa_beacon_vel2 = sympy.sqrt((x-self.Beacons[1]['x']-self.dt*x_vel)**2 + (y-self.Beacons[1]['y']-self.dt*y_vel)**2 + (z-self.Beacons[1]['z']-self.dt*z_vel)**2)
+        equa_beacon_vel3 = sympy.sqrt((x-self.Beacons[2]['x']-self.dt*x_vel)**2 + (y-self.Beacons[2]['y']-self.dt*y_vel)**2 + (z-self.Beacons[2]['z']-self.dt*z_vel)**2)
+        H = sympy.Matrix([[equa_beacon1],
+                        [equa_beacon2],
+                        [equa_beacon3],
+                        [equa_beacon_vel1],
+                        [equa_beacon_vel2],
+                        [equa_beacon_vel3]])
+        state = sympy.Matrix([ x, y, z, x_vel,y_vel,z_vel])
+        self.H_j = H.jacobian(state)
+
+
+        ####-----F = A +B
+        self.EKF.x = array([[ init_position[0], init_position[1], init_position[2], 0, 0, 0]]).T # x, y,z, vx,vy,vz
+        self.EKF.F= np.array([[1, 0, 0, self.dt, 0, 0],
+                            [0, 1, 0, 0, self.dt, 0],
+                            [0, 0, 1, 0, 0, self.dt],
+                            [0, 0, 0, 1, 0, 0],
+                            [0, 0, 0, 0, 1, 0],
+                            [0, 0, 0, 0, 0, 1]])
+
+        self.EKF.Q = np.ones(6)*(q**2)#ekf.P = np.diag([.1, .1, .1]) #Process noise matrix
+        self.EKF.R = np.ones(self.Beacons_num*2)*(r**2)#Measurement noise matrix
+        
+
+
+
+    def read_beacon_position(self):
+        #here read the values of beacon from beacons.yaml
+        #and retun a list of beacon position
+        Beacons_yaml = get_yaml_beacon(path = "./data/beacons.yaml")
+        Beacons_num =Beacons_yaml['beacons_num']
+        Beacons = []
+        for c in range(0,Beacons_num) :
+            Beacons.append(Beacons_yaml['beacons']['beacon'+str(c)])
+        return (Beacons,Beacons_num)
+
+    def H_of(self,x):
+        """ compute Jacobian of H matrix where h(x) computes the range and
+        bearing to a landmark for state x """
+        self.subs[self.px] = x[0]
+        self.subs[self.px] = x[1]
+        self.subs[self.px] = x[2]
+        self.subs[self.px] = x[3]
+        self.subs[self.px] = x[4]
+        self.subs[self.px] = x[5]
+
+        H = array(self.H_j.evalf(subs=self.subs)).astype(float)
+
+        return H
+
+    def hx(self,x):
+        """ compute measurement for slant range that would correspond 
+        to state x.
+        """
+        Beacons_dist= []
+       
+        Beacons_dist.append(math.sqrt((x[0] - self.Beacons[0]['x'])**2+(x[1] - self.Beacons[0]['y'])**2+(x[2] - self.Beacons[0]['z'])**2))
+        Beacons_dist.append(math.sqrt((x[0] - self.Beacons[1]['x'])**2+(x[1] - self.Beacons[1]['y'])**2+(x[2] - self.Beacons[1]['z'])**2))
+        Beacons_dist.append(math.sqrt((x[0] - self.Beacons[2]['x'])**2+(x[1] - self.Beacons[2]['y'])**2+(x[2] - self.Beacons[2]['z'])**2))
+        Beacons_dist.append(math.sqrt((x[0]-self.dt*x[3] - self.Beacons[0]['x'])**2+(x[1] -self.dt*x[4] - self.Beacons[0]['y'])**2+(x[2] -self.dt*x[5] - self.Beacons[0]['z'])**2))
+        Beacons_dist.append(math.sqrt((x[0] -self.dt*x[3] - self.Beacons[1]['x'])**2+(x[1] -self.dt*x[4] - self.Beacons[1]['y'])**2+(x[2] -self.dt*x[5] - self.Beacons[1]['z'])**2))
+        Beacons_dist.append(math.sqrt((x[0] -self.dt*x[3] - self.Beacons[2]['x'])**2+(x[1] -self.dt*x[4] - self.Beacons[2]['y'])**2+(x[2] -self.dt*x[5] - self.Beacons[2]['z'])**2))        
+        return Beacons_dist
+
+    def residual(self,a, b):
+        """ compute residual (a-b) between measurements containing 
+        [range, bearing]. Bearing is normalized to [-pi, pi)"""
+        y = a - b
+        y[1] = y[1] % (2 * np.pi)    # force in range [0, 2 pi)
+        if y[1] > np.pi:             # move to [-pi, pi)
+            y[1] -= 2 * np.pi
+        return y
+
+    def get_speed(self):
+        return[0,0,0]
+
+
+    def update(self,z):
+        self.EKF.update(array([z]), self.HJacobian_at, self.hx)
+
+
+    def predict(self):
+        self.EKF.predict()
+
+    def get_sensor_reading():   # get beacon reading 
+
+        return np.random.normal(130, 3, 1)  # 1st number = mu // 2nd number = sigma // 3rd number = no. of samples
+
+
+if __name__ == '__main__':
+    hola = Beacons_EKF()
+
+    
