@@ -4,7 +4,7 @@ beacons:
     name: "beacon 1" #if it's set to 0,0,0 robot will go back to start point 
     x: 0.0
     y: 0.0
-    z: 0.0
+    z: 2.0
 
   beacon1:
     name: "beacon 2"

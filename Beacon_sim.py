@@ -24,9 +24,11 @@ class Beacon_sim():
         self.dt = dt
         self.Beacons , self.Beacons_num = self.read_beacon_position()
         print(self.Beacons)
-        self.Beacons_dist[0] = math.sqrt((self.pos[0] - self.Beacons[0]['x'])**2+(self.pos[1] - self.Beacons[0]['y'])**2+(self.pos[2] - self.Beacons[0]['z'])**2)
-        self.Beacons_dist[1] = math.sqrt((self.pos[0] - self.Beacons[1]['x'])**2+(self.pos[1] - self.Beacons[1]['y'])**2+(self.pos[2] - self.Beacons[1]['z'])**2)
-        self.Beacons_dist[2] = math.sqrt((self.pos[0] - self.Beacons[2]['x'])**2+(self.pos[1] - self.Beacons[2]['y'])**2+(self.pos[2] - self.Beacons[2]['z'])**2)
+        self.Beacons_dist= []
+        self.Beacons_dist.append(math.sqrt((self.pos[0] - self.Beacons[0]['x'])**2+(self.pos[1] - self.Beacons[0]['y'])**2+(self.pos[2] - self.Beacons[0]['z'])**2))
+        self.Beacons_dist.append(math.sqrt((self.pos[0] - self.Beacons[1]['x'])**2+(self.pos[1] - self.Beacons[1]['y'])**2+(self.pos[2] - self.Beacons[1]['z'])**2))
+        self.Beacons_dist.append(math.sqrt((self.pos[0] - self.Beacons[2]['x'])**2+(self.pos[1] - self.Beacons[2]['y'])**2+(self.pos[2] - self.Beacons[2]['z'])**2))
+        self.Beacons_dist_last = self.Beacons_dist.copy()
         pass
 
 
@@ -52,6 +54,10 @@ class Beacon_sim():
         self.pos[1] = self.pos[1] + self.vel[1]*self.dt
         self.pos[2] = self.pos[2] + self.vel[2]*self.dt
 
+        self.Beacons_dist_last[0] = self.Beacons_dist[0]
+        self.Beacons_dist_last[1] = self.Beacons_dist[1]
+        self.Beacons_dist_last[2] = self.Beacons_dist[1]
+
         self.Beacons_dist[0] = math.sqrt((self.pos[0] - self.Beacons[0]['x'])**2+(self.pos[1] - self.Beacons[0]['y'])**2+(self.pos[2] - self.Beacons[0]['z'])**2)
         self.Beacons_dist[1] = math.sqrt((self.pos[0] - self.Beacons[1]['x'])**2+(self.pos[1] - self.Beacons[1]['y'])**2+(self.pos[2] - self.Beacons[1]['z'])**2)
         self.Beacons_dist[2] = math.sqrt((self.pos[0] - self.Beacons[2]['x'])**2+(self.pos[1] - self.Beacons[2]['y'])**2+(self.pos[2] - self.Beacons[2]['z'])**2)
@@ -62,7 +68,11 @@ class Beacon_sim():
         #Beacons_dist.append(math.sqrt((self.pos[0] -self.dt*speed[0] - self.Beacons[0]['x'])**2+(self.pos[1] -self.dt*speed[1] - self.Beacons[0]['y'])**2+(self.pos[2] -self.dt*speed[2] - self.Beacons[0]['z'])**2))
         #Beacons_dist.append(math.sqrt((self.pos[0] -self.dt*speed[0] - self.Beacons[1]['x'])**2+(self.pos[1] -self.dt*speed[1] - self.Beacons[1]['y'])**2+(self.pos[2] -self.dt*speed[2] - self.Beacons[1]['z'])**2))
         #Beacons_dist.append(math.sqrt((self.pos[0] -self.dt*speed[0] - self.Beacons[2]['x'])**2+(self.pos[1] -self.dt*speed[1] - self.Beacons[2]['y'])**2+(self.pos[2] -self.dt*speed[2] - self.Beacons[2]['z'])**2))
-        return (self.pos,self.vel,self.Beacons_dist)
+        
+        #return (self.pos,self.vel,self.Beacons_dist)
+        #err = self.pos * 0.05*randn()
+        #slant_dist = math.sqrt(self.pos**2 + self.alt**2)
+        return np.array([[self.Beacons_dist[0],self.Beacons_dist[1],self.Beacons_dist[2],self.Beacons_dist_last[0],self.Beacons_dist_last[1],self.Beacons_dist_last[2]]]).T
 
 
 
