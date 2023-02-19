@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 
 
 def get_yaml_beacon(path = "/data/beacons.yaml"):
-    print("get position of beacons")
+    #print("get position of beacons")
     if not (path is None):
         with open(path, 'r') as f:
             beacons = yaml.load(f, Loader=SafeLoader)
@@ -38,6 +38,12 @@ class Beacons_EKF():
         self.EKF.Q = np.diag([1, 1, 1, 1, 1, 1])*(q**2)#ekf.P = np.diag([.1, .1, .1]) #Process noise matrix
         self.EKF.R = np.diag([1, 1, 1, 1, 1, 1])*(r**2)#Measurement noise matrix
         pass
+    def get_beacon_point(self):
+        beacon_point = []
+        beacon_point.append([self.Beacons[0]['x'],self.Beacons[0]['y'],self.Beacons[0]['z']])
+        beacon_point.append([self.Beacons[1]['x'],self.Beacons[1]['y'],self.Beacons[1]['z']])
+        beacon_point.append([self.Beacons[2]['x'],self.Beacons[2]['y'],self.Beacons[2]['z']])
+        return beacon_point
         
     def H_def_jacbiano(self):
         x, y,z, x_vel,y_vel,z_vel  = sympy.symbols('x, y, z, x_vel,y_vel,z_vel')

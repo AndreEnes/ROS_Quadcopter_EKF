@@ -5,7 +5,7 @@ import yaml
 from yaml.loader import SafeLoader
 
 def get_yaml_beacon(path = "/data/beacons.yaml"):
-    print("obtener las misiones para ser usadas y comparadas con la que envian")
+    #print("obtener las misiones para ser usadas y comparadas con la que envian")
     if not (path is None):
         with open(path, 'r') as f:
             beacons = yaml.load(f, Loader=SafeLoader)
@@ -23,7 +23,7 @@ class Beacon_sim():
         self.Beacons_dist =[0,0,0]
         self.dt = dt
         self.Beacons , self.Beacons_num = self.read_beacon_position()
-        print(self.Beacons)
+        #print(self.Beacons)
         self.Beacons_dist= []
         self.Beacons_dist.append(math.sqrt((self.pos[0] - self.Beacons[0]['x'])**2+(self.pos[1] - self.Beacons[0]['y'])**2+(self.pos[2] - self.Beacons[0]['z'])**2))
         self.Beacons_dist.append(math.sqrt((self.pos[0] - self.Beacons[1]['x'])**2+(self.pos[1] - self.Beacons[1]['y'])**2+(self.pos[2] - self.Beacons[1]['z'])**2))
@@ -44,7 +44,7 @@ class Beacon_sim():
 
 
     def update_position(self):
-        print("update")
+        #print("update")
 
         self.vel[0] = self.vel[0]  + .1*randn()
         self.vel[1] = self.vel[1]  + .1*randn()
@@ -75,10 +75,10 @@ class Beacon_sim():
         return np.array([[self.Beacons_dist[0],self.Beacons_dist[1],self.Beacons_dist[2],self.Beacons_dist_last[0],self.Beacons_dist_last[1],self.Beacons_dist_last[2]]]).T
 
     def get_pos(self):
-        self.pos
+        return self.pos
 
     def get_vel(self):
-        self.vel
+        return self.vel
 
 
 if __name__ == "__main__":
