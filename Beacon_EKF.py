@@ -19,13 +19,12 @@ def get_yaml_beacon(path = "/data/beacons.yaml"):
         return None 
 
 class Beacons_EKF():
-    def __init__(self,init_position=[1.0,2.0,3.0], step_time = 0.2, q=5.0, r=0.2):
+    def __init__(self,init_position=[1.0,2.0,3.0],init_speed=[1.0,2.0,3.0], step_time = 0.2, q=5.0, r=0.2):
         self.EKF = ExtendedKalmanFilter(dim_x=6, dim_z=6)
         self.Beacons=[]
         self.Beacons , self.Beacons_num = self.read_beacon_position()
         self.dt = step_time
-        self.Beacons_speed = [0.0,0.0,0.0]
-        self.EKF.x = array([[ init_position[0], init_position[1], init_position[2], 0, 0, 0]]).T # x, y,z, vx,vy,vz
+        self.EKF.x = array([[ init_position[0], init_position[1], init_position[2], init_speed[0], init_speed[1], init_speed[2]]]).T # x, y,z, vx,vy,vz
         ####--------
         self.H_def_jacbiano()
         self.EKF.F= np.array([[1, 0, 0, self.dt, 0, 0],
@@ -137,29 +136,30 @@ class Beacons_EKF():
 
 if __name__ == '__main__':
     dt = 0.2
-    xs, track = [], []
-    EKF = Beacons_EKF(step_time=dt,init_position=[1.1,1.2,0.0])
-    beacon = Beacon_sim(pos=[1.1,1.2,0.0],vel=[0.0,0.0,0.0],dt=dt)
+    xs, track_pos = [], []
+    xs1 ,xs2, xs3= [],[],[]
+    track1,track2 = [],[]
+    EKF = Beacons_EKF(step_time=dt,init_position=[1.1,1.2,0.0],init_speed=[1.0,2.0,3.0])
+    beacon = Beacon_sim(pos=[1.1,1.2,0.0],vel=[10.0,10.0,0.0],dt=dt)
     for i in range (int(20/dt)):
         z = beacon.update_position()
-        track.append((beacon.get_pos(), beacon.get_vel(), z))
+        track_pos.append(beacon.get_pos().copy())#, beacon.get_vel(), z].copy())
         EKF.update(z=z)
         xs.append(EKF.get_status())
         EKF.predict()
-    print("tranc")
-    print(track)
-    print("xs")
-    print(len(xs))
+        print(str(beacon.get_pos())+"--"+str(EKF.get_status()))
     time = np.arange(0, len(xs)*dt, dt)
-    #plt.plot(xs,ys)
-    #xs = asarray(xs)
-    #track = asarray(track)
     xs1 ,xs2, xs3= [],[],[]
     for i in range(len(xs)):
         xs1.append(xs[i][0][0])
         xs2.append(xs[i][1][0])
         xs3.append(xs[i][2][0])
-    plt.plot(xs1,time,xs2,time,xs3, time)
+        #track1.append(track[i][0][0])
+        #print(track_pos[i][0][0])
+    plt.plot(xs1, time, label = "line 1")
+    plt.plot(track1, time, label = "line 2")
+    #print("track")
+    #print(track[-1][0][0])
 
     plt.ylabel('some numbers')
 

@@ -17,9 +17,10 @@ def get_yaml_beacon(path = "/data/beacons.yaml"):
 class Beacon_sim():
     # this get 
 
-    def __init__(self, dt=0.2, pos=[0,0,0], vel=[0,0,0]):
+    def __init__(self, dt=0.2, pos=[0.0,0.0,0.0], vel=[0.0,0.0,0.0]):
         self.pos = pos
         self.vel = vel
+        self.count = 0
         self.Beacons_dist =[0,0,0]
         self.dt = dt
         self.Beacons , self.Beacons_num = self.read_beacon_position()
@@ -45,11 +46,21 @@ class Beacon_sim():
 
     def update_position(self):
         #print("update")
-
-        self.vel[0] = self.vel[0]  + .1*randn()
-        self.vel[1] = self.vel[1]  + .1*randn()
-        self.vel[2] = self.vel[2]  + .1*randn()
-        last_post = self.pos 
+        self.count=self.count +1
+        if self.count <20:
+            self.vel[0] = self.vel[0]  + 0.1*randn()
+        else:
+            self.vel[0] = self.vel[0]  + 0.1*randn()-0.02
+        if self.count <10:
+            self.vel[1] = self.vel[1]  + 0.1*randn()
+        else:
+            self.vel[1] = self.vel[1]  + 0.1*randn()-0.005
+        if self.pos[2] <10 :
+            self.vel[2] = self.vel[2]  + 0.1*randn() +0.001
+        else:
+            self.vel[2] =self.vel[2]  + 0.1*randn() -0.005
+            
+         
         self.pos[0] = self.pos[0] + self.vel[0]*self.dt
         self.pos[1] = self.pos[1] + self.vel[1]*self.dt
         self.pos[2] = self.pos[2] + self.vel[2]*self.dt
@@ -58,9 +69,9 @@ class Beacon_sim():
         self.Beacons_dist_last[1] = self.Beacons_dist[1]
         self.Beacons_dist_last[2] = self.Beacons_dist[1]
 
-        self.Beacons_dist[0] = math.sqrt((self.pos[0] - self.Beacons[0]['x'])**2+(self.pos[1] - self.Beacons[0]['y'])**2+(self.pos[2] - self.Beacons[0]['z'])**2)
-        self.Beacons_dist[1] = math.sqrt((self.pos[0] - self.Beacons[1]['x'])**2+(self.pos[1] - self.Beacons[1]['y'])**2+(self.pos[2] - self.Beacons[1]['z'])**2)
-        self.Beacons_dist[2] = math.sqrt((self.pos[0] - self.Beacons[2]['x'])**2+(self.pos[1] - self.Beacons[2]['y'])**2+(self.pos[2] - self.Beacons[2]['z'])**2)
+        self.Beacons_dist[0] = math.sqrt((self.pos[0] - self.Beacons[0]['x'])**2+(self.pos[1] - self.Beacons[0]['y'])**2+(self.pos[2] - self.Beacons[0]['z'])**2)*( 1+ 0.01*randn())
+        self.Beacons_dist[1] = math.sqrt((self.pos[0] - self.Beacons[1]['x'])**2+(self.pos[1] - self.Beacons[1]['y'])**2+(self.pos[2] - self.Beacons[1]['z'])**2)*( 1+ 0.01*randn())
+        self.Beacons_dist[2] = math.sqrt((self.pos[0] - self.Beacons[2]['x'])**2+(self.pos[1] - self.Beacons[2]['y'])**2+(self.pos[2] - self.Beacons[2]['z'])**2)*( 1+ 0.01*randn())
         #Beacons_dist.append(math.sqrt((self.pos[0] - self.Beacons[0]['x'])**2+(self.pos[1] - self.Beacons[0]['y'])**2+(self.pos[2] - self.Beacons[0]['z'])**2))
         #Beacons_dist.append(math.sqrt((self.pos[0] - self.Beacons[1]['x'])**2+(self.pos[1] - self.Beacons[1]['y'])**2+(self.pos[2] - self.Beacons[1]['z'])**2))
         #Beacons_dist.append(math.sqrt((self.pos[0] - self.Beacons[2]['x'])**2+(self.pos[1] - self.Beacons[2]['y'])**2+(self.pos[2] - self.Beacons[2]['z'])**2))
@@ -83,7 +94,10 @@ class Beacon_sim():
 
 if __name__ == "__main__":
     print("main")
-    uno =Beacon_sim()
+    uno =Beacon_sim( dt=0.2, pos=[5,2,1], vel=[2,2,3])
     print(uno.update_position())
+    print(uno.get_pos())
     print(uno.update_position())
+    print(uno.get_pos())
     print(uno.update_position())
+    print(uno.get_pos())
