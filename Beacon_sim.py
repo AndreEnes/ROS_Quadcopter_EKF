@@ -4,6 +4,10 @@ import math
 import yaml
 from yaml.loader import SafeLoader
 
+#def square_trayect(size=[50,50,50]):
+
+
+
 def get_yaml_beacon(path = "/data/beacons.yaml"):
     #print("obtener las misiones para ser usadas y comparadas con la que envian")
     if not (path is None):
@@ -17,7 +21,8 @@ def get_yaml_beacon(path = "/data/beacons.yaml"):
 class Beacon_sim():
     # this get 
 
-    def __init__(self, dt=0.2, pos=[0.0,0.0,0.0], vel=[0.0,0.0,0.0]):
+    def __init__(self, dt=0.2, pos=[0.0,0.0,0.0], vel=[0.0,0.0,0.0],ruido=1):
+        # ruido  es un factor que multiplica el ruido condistribucion gausiana
         self.def_trayec = False
         self.trayec = []
         self.pos = pos
@@ -26,6 +31,7 @@ class Beacon_sim():
         self.count = 0
         self.Beacons_dist =[0,0,0]
         self.dt = dt
+        self.ruido= ruido
         self.Beacons , self.Beacons_num = self.read_beacon_position()
         #print(self.Beacons)
         self.Beacons_dist= []
@@ -60,18 +66,9 @@ class Beacon_sim():
             self.pos[1] = self.trayec[1][self.count]
             self.pos[2] = self.trayec[2][self.count]
         else:
-            if self.count <20:
-                self.vel[0] = self.vel[0]  + 0.1*randn()
-            else:
-                self.vel[0] = self.vel[0]  + 0.1*randn()-0.02
-            if self.count <10:
-                self.vel[1] = self.vel[1]  + 0.1*randn()
-            else:
-                self.vel[1] = self.vel[1]  + 0.1*randn()-0.005
-            if self.pos[2] <10 :
-                self.vel[2] = self.vel[2]  + 0.1*randn() +0.001
-            else:
-                self.vel[2] =self.vel[2]  + 0.1*randn() -0.005
+            self.vel[0] = self.vel[0]  + 0.1*randn()
+            self.vel[1] = self.vel[1]  + 0.1*randn()
+            self.vel[2] = self.vel[2]  + 0.1*randn()
             self.pos[0] = self.pos[0] + self.vel[0]*self.dt
             self.pos[1] = self.pos[1] + self.vel[1]*self.dt
             self.pos[2] = self.pos[2] + self.vel[2]*self.dt
@@ -84,11 +81,11 @@ class Beacon_sim():
 
         self.Beacons_dist_last[0] = self.Beacons_dist[0]
         self.Beacons_dist_last[1] = self.Beacons_dist[1]
-        self.Beacons_dist_last[2] = self.Beacons_dist[1]
+        self.Beacons_dist_last[2] = self.Beacons_dist[2]
 
-        self.Beacons_dist[0] = math.sqrt((self.pos[0] - self.Beacons[0]['x'])**2+(self.pos[1] - self.Beacons[0]['y'])**2+(self.pos[2] - self.Beacons[0]['z'])**2)*( 1+ 0.01*randn())
-        self.Beacons_dist[1] = math.sqrt((self.pos[0] - self.Beacons[1]['x'])**2+(self.pos[1] - self.Beacons[1]['y'])**2+(self.pos[2] - self.Beacons[1]['z'])**2)*( 1+ 0.01*randn())
-        self.Beacons_dist[2] = math.sqrt((self.pos[0] - self.Beacons[2]['x'])**2+(self.pos[1] - self.Beacons[2]['y'])**2+(self.pos[2] - self.Beacons[2]['z'])**2)*( 1+ 0.01*randn())
+        self.Beacons_dist[0] = math.sqrt((self.pos[0] - self.Beacons[0]['x'])**2+(self.pos[1] - self.Beacons[0]['y'])**2+(self.pos[2] - self.Beacons[0]['z'])**2) + self.ruido*randn()
+        self.Beacons_dist[1] = math.sqrt((self.pos[0] - self.Beacons[1]['x'])**2+(self.pos[1] - self.Beacons[1]['y'])**2+(self.pos[2] - self.Beacons[1]['z'])**2) + self.ruido*randn()
+        self.Beacons_dist[2] = math.sqrt((self.pos[0] - self.Beacons[2]['x'])**2+(self.pos[1] - self.Beacons[2]['y'])**2+(self.pos[2] - self.Beacons[2]['z'])**2) + self.ruido*randn()
         #Beacons_dist.append(math.sqrt((self.pos[0] - self.Beacons[0]['x'])**2+(self.pos[1] - self.Beacons[0]['y'])**2+(self.pos[2] - self.Beacons[0]['z'])**2))
         #Beacons_dist.append(math.sqrt((self.pos[0] - self.Beacons[1]['x'])**2+(self.pos[1] - self.Beacons[1]['y'])**2+(self.pos[2] - self.Beacons[1]['z'])**2))
         #Beacons_dist.append(math.sqrt((self.pos[0] - self.Beacons[2]['x'])**2+(self.pos[1] - self.Beacons[2]['y'])**2+(self.pos[2] - self.Beacons[2]['z'])**2))
