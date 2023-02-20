@@ -18,8 +18,11 @@ class Beacon_sim():
     # this get 
 
     def __init__(self, dt=0.2, pos=[0.0,0.0,0.0], vel=[0.0,0.0,0.0]):
+        self.def_trayec = False
+        self.trayec = []
         self.pos = pos
         self.vel = vel
+        self.velcal =vel
         self.count = 0
         self.Beacons_dist =[0,0,0]
         self.dt = dt
@@ -47,23 +50,37 @@ class Beacon_sim():
     def update_position(self):
         #print("update")
         self.count=self.count +1
-        if self.count <20:
-            self.vel[0] = self.vel[0]  + 0.1*randn()
+        pos_last =[]
+        pos_last.append(self.pos[0])
+        pos_last.append(self.pos[1])
+        pos_last.append(self.pos[2])
+
+        if (self.def_trayec):
+            self.pos[0] = self.trayec[0][self.count]
+            self.pos[1] = self.trayec[1][self.count]
+            self.pos[2] = self.trayec[2][self.count]
         else:
-            self.vel[0] = self.vel[0]  + 0.1*randn()-0.02
-        if self.count <10:
-            self.vel[1] = self.vel[1]  + 0.1*randn()
-        else:
-            self.vel[1] = self.vel[1]  + 0.1*randn()-0.005
-        if self.pos[2] <10 :
-            self.vel[2] = self.vel[2]  + 0.1*randn() +0.001
-        else:
-            self.vel[2] =self.vel[2]  + 0.1*randn() -0.005
+            if self.count <20:
+                self.vel[0] = self.vel[0]  + 0.1*randn()
+            else:
+                self.vel[0] = self.vel[0]  + 0.1*randn()-0.02
+            if self.count <10:
+                self.vel[1] = self.vel[1]  + 0.1*randn()
+            else:
+                self.vel[1] = self.vel[1]  + 0.1*randn()-0.005
+            if self.pos[2] <10 :
+                self.vel[2] = self.vel[2]  + 0.1*randn() +0.001
+            else:
+                self.vel[2] =self.vel[2]  + 0.1*randn() -0.005
+            self.pos[0] = self.pos[0] + self.vel[0]*self.dt
+            self.pos[1] = self.pos[1] + self.vel[1]*self.dt
+            self.pos[2] = self.pos[2] + self.vel[2]*self.dt
             
-         
-        self.pos[0] = self.pos[0] + self.vel[0]*self.dt
-        self.pos[1] = self.pos[1] + self.vel[1]*self.dt
-        self.pos[2] = self.pos[2] + self.vel[2]*self.dt
+
+        self.velcal[0] =  (self.pos[0] -pos_last[0])/self.dt
+        self.velcal[1] =  (self.pos[1] -pos_last[1])/self.dt
+        self.velcal[2] =  (self.pos[2] -pos_last[2])/self.dt
+
 
         self.Beacons_dist_last[0] = self.Beacons_dist[0]
         self.Beacons_dist_last[1] = self.Beacons_dist[1]
@@ -89,7 +106,12 @@ class Beacon_sim():
         return self.pos
 
     def get_vel(self):
-        return self.vel
+        return self.velcal
+
+    def set_trayec(self,trayec):
+        self.trayec = trayec
+        self.def_trayec = True
+        
 
 
 if __name__ == "__main__":
@@ -101,3 +123,43 @@ if __name__ == "__main__":
     print(uno.get_pos())
     print(uno.update_position())
     print(uno.get_pos())
+
+    trayec_x =[]
+    trayec_y =[]
+    trayec_z =[]
+    init_pos = [0.1,0.2,0.3]
+
+    for i in range(0,50,1):
+        trayec_x.append(0.0)
+        trayec_y.append(0.0)
+        trayec_z.append(i*0.1)
+        
+    for i in range(0,50,1):
+        trayec_x.append(trayec_x[-1])
+        trayec_y.append(trayec_y[-1]+0.1)
+        trayec_z.append(trayec_z[-1])
+        
+    for i in range(0,50,1):
+        trayec_x.append(trayec_x[-1]+0.1)
+        trayec_y.append(trayec_y[-1])
+        trayec_z.append(trayec_z[-1])
+        
+    for i in range(0,50,1):
+        trayec_x.append(trayec_x[-1])
+        trayec_y.append(trayec_y[-1]-0.1)
+        trayec_z.append(trayec_z[-1])
+    for i in range(0,50,1):
+        trayec_x.append(trayec_x[-1]-0.1)
+        trayec_y.append(trayec_y[-1])
+        trayec_z.append(trayec_z[-1])
+
+    trayec = []
+    trayec.append(trayec_x)
+    trayec.append(trayec_y)
+    trayec.append(trayec_z)
+    dos =Beacon_sim( dt=0.2, pos=init_pos, vel=[0,0,0.1])
+    dos.set_trayec(trayec)
+    for i in range(len(trayec[0]) -1):
+        print(i)
+        print(dos.update_position())
+        print(dos.get_pos())
