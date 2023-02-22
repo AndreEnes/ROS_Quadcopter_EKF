@@ -1,0 +1,36 @@
+#VRML_SIM R2023a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/floors/protos/RectangleArena.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.3225135671189367 0.3424707163510536 0.8824391239435246 1.6357838434961043
+  position -0.1978860549294999 -1.3947739129671386 1.2302825557812334
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+}
+Robot {
+  translation 0.25 0 0
+  children [
+    Receiver {
+        }    
+  ]
+  controller "ros"
+  model "rec"
+}
+Robot {
+  children [
+    Emitter {
+    }
+  ]
+  name "robot(1)"
+  model "emit"
+  controller "ros"
+}

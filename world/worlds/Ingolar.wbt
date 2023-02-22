@@ -1,0 +1,275 @@
+#VRML_SIM R2023a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/floors/protos/Floor.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/animals/protos/Cow.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/apartment_structure/protos/Wall.proto"
+EXTERNPROTO "../protos/drone_modified.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/appearances/protos/Parquetry.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/buildings/protos/Hotel.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/buildings/protos/UBuilding.proto"
+
+WorldInfo {
+  info [
+    "Drone flying over some cows"
+    "Try not to crash"
+  ]
+  title "Cow drone"
+  defaultDamping Damping {
+    linear 0.5
+    angular 0.5
+  }
+}
+Viewpoint {
+  orientation -0.12681020974793594 -0.13493995298090766 0.9827056424958571 3.8815741106689496
+  position 28.073372145491675 26.51265120375047 9.159695425801587
+  near 0.2
+  follow "Mavic_2_PRO"
+  followSmoothness 0.2
+}
+TexturedBackground {
+  texture "dusk"
+}
+TexturedBackgroundLight {
+}
+Cow {
+  translation -0.742456 0.742456 0
+  rotation 0 0 1 0.785398
+}
+Cow {
+  translation -9.25217 -31.769 -95.7127
+  rotation 0.18506199916897909 -0.3944809982285831 0.9000759959582088 1.29207
+  scale 100
+  name "cow(5)"
+}
+Cow {
+  translation 25.2368 -25.2366 0
+  rotation 0 0 1 0.785398
+  scale 50
+  name "cow(4)"
+}
+Cow {
+  translation -3.09712 1.79778 0
+  rotation 0 0 1 1.5708
+  scale 2.5
+  name "cow(3)"
+}
+Cow {
+  translation 0.792061 -0.0187112 0
+  rotation 0 0 1 1.30899
+  name "cow(1)"
+}
+Cow {
+  translation 2.93646 -0.593311 0
+  rotation 0 0 1 1.30899
+  scale 2
+  name "cow(2)"
+}
+Floor {
+  size 400 400
+  tileSize 15 15
+  appearance Parquetry {
+  }
+}
+Robot {
+  translation 9.75 10.35 0
+  children [
+    Receiver {
+      translation 0 0 0.97
+      boundingObject Sphere {
+        radius 0.1
+      }
+      physics Physics {
+      }
+      channel 1
+    }
+    Shape {
+      appearance PBRAppearance {
+        baseColor 1 0 0
+        roughness 0.5
+        metalness 0.7
+      }
+      geometry Cone {
+        bottomRadius 2
+      }
+    }
+  ]
+  name "robot(1)"
+  model "rec"
+  controller "ros"
+}
+Wall {
+  translation 0.3 0 0
+  rotation 0 0 1 -0.785395307179586
+  size 0.01 1 2.4
+}
+Wall {
+  translation 0.310212 0.406187 0
+  rotation 0 0 1 0.261803
+  name "wall(1)"
+  size 0.01 1 2.4
+}
+drone_modified {
+  translation 1 7.31 0.07
+  rotation 0 1 0 0
+  controller "mavic2pro_patrol"
+}
+Hotel {
+  translation -27.31 0 0
+}
+UBuilding {
+  translation -32.5023 78.785 0
+  rotation 0 0 1 -0.523595307179586
+}
+DEF BEACON_ROBOT_1 Robot {
+  translation 13.82 15.82 0.5
+  children [
+    Emitter {
+      translation 0 0 0.51
+      boundingObject Sphere {
+        radius 0.1
+      }
+      physics Physics {
+      }
+      channel 1
+    }
+    DEF BEACON_SOLID Group {
+      children [
+        Transform {
+          translation 0 0 0.5
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0 1 0
+                roughness 0.5
+                metalness 0.7
+              }
+              geometry Sphere {
+                radius 0.1
+                subdivision 2
+              }
+            }
+          ]
+        }
+        Shape {
+          appearance DEF BEACON_COLOR PBRAppearance {
+            baseColor 0 1 0
+            roughness 0.5
+            metalness 0.7
+          }
+          geometry Cylinder {
+            height 1
+            radius 0.1
+          }
+        }
+      ]
+    }
+  ]
+  name "beacon_1"
+  model "beacon_1"
+  boundingObject USE BEACON_SOLID
+  physics Physics {
+  }
+  controllerArgs [
+    ""
+  ]
+}
+DEF BEACON_ROBOT_2 Robot {
+  translation 3.58 15.82 0.6
+  children [
+    Emitter {
+      translation 0 0 0.51
+      boundingObject Sphere {
+        radius 0.1
+      }
+      physics Physics {
+      }
+      channel 2
+    }
+    DEF BEACON_SOLID Group {
+      children [
+        Transform {
+          translation 0 0 0.5
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0 1 0
+                roughness 0.5
+                metalness 0.7
+              }
+              geometry Sphere {
+                radius 0.1
+                subdivision 2
+              }
+            }
+          ]
+        }
+        Shape {
+          appearance DEF BEACON_COLOR PBRAppearance {
+            baseColor 0 1 0
+            roughness 0.5
+            metalness 0.7
+          }
+          geometry Cylinder {
+            height 1
+            radius 0.1
+          }
+        }
+      ]
+    }
+  ]
+  name "robot(2)"
+  boundingObject USE BEACON_SOLID
+  physics Physics {
+  }
+}
+DEF BEACON_ROBOT_3 Robot {
+  translation 15.72 7.62 0.7
+  children [
+    Emitter {
+      translation 0 0 0.51
+      boundingObject Sphere {
+        radius 0.1
+      }
+      physics Physics {
+      }
+      channel 3
+    }
+    DEF BEACON_SOLID Group {
+      children [
+        Transform {
+          translation 0 0 0.5
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0 1 0
+                roughness 0.5
+                metalness 0.7
+              }
+              geometry Sphere {
+                radius 0.1
+                subdivision 2
+              }
+            }
+          ]
+        }
+        Shape {
+          appearance DEF BEACON_COLOR PBRAppearance {
+            baseColor 0 1 0
+            roughness 0.5
+            metalness 0.7
+          }
+          geometry Cylinder {
+            height 1
+            radius 0.1
+          }
+        }
+      ]
+    }
+  ]
+  name "robot(3)"
+  boundingObject USE BEACON_SOLID
+  physics Physics {
+  }
+}
