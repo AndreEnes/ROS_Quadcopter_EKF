@@ -31,6 +31,7 @@
 #include <webots_ros/get_uint64.h>
 #include <webots_ros/supervisor_get_from_def.h>
 #include <webots_ros/get_float.h>
+#include <webots_ros/get_bool.h>
 
 // include files to use standard message types in topic
 // Webots only use basic messages type defined in ROS library
@@ -90,7 +91,11 @@ int main(int argc, char **argv)
     webots_ros::get_float receiver_get_signal_strength_srv;
     receiver_get_signal_strength_client = n.serviceClient<webots_ros::get_float>(model_name + robot_num + "/receiver/get_signal_strength");
 
-
+    // test receiver_next_packet
+    // An error message will probably appear since there is no packet to read
+    ros::ServiceClient receiver_next_packet_client;
+    webots_ros::get_bool receiver_next_packet_srv;
+    receiver_next_packet_client = n.serviceClient<webots_ros::get_bool>(model_name + "/receiver/next_packet");
 
     receiver_srv.request.value = 32;
     if (set_receiver_client.call(receiver_srv) && receiver_srv.response.success) 
@@ -124,10 +129,20 @@ int main(int argc, char **argv)
         else
             ROS_INFO("No message received by emitter, impossible to get signal strength.");
 
-        sub_receiver_32.shutdown();
-        set_receiver_client.shutdown();
-        time_step_client.call(time_step_srv);
+        if (receiver_next_packet_client.call(receiver_next_packet_srv) && receiver_next_packet_srv.response.value)
+            ROS_INFO("Next packet is ready to be read.");
+        else if (!receiver_next_packet_srv.response.value)
+            ROS_INFO("No message received by emitter, impossible to get next packet.");
+        else
+            ROS_ERROR("Failed to call service receiver_next_packet.");
+
+        ros::spinOnce();
     }
+
+  
+
+  receiver_next_packet_client.shutdown();
+  time_step_client.call(time_step_srv);
     
     sub_receiver_32.shutdown();
     set_receiver_client.shutdown();

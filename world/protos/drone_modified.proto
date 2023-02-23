@@ -58,12 +58,6 @@ Robot {
         url "meshes/Mavic2Pro/body_lenses.obj"
       }
     }
-    Emitter {
-      translation 0 0 0.95
-      boundingObject Sphere {
-        radius 0.1
-      }
-    }
     DEF COMPASS Compass {
     }
     DEF GPS GPS {
