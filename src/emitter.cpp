@@ -77,7 +77,7 @@ int main(int argc, char **argv)
   
   ros::ServiceClient emitter_send_client;
   webots_ros::set_string emitter_send_srv;
-  emitter_send_client = n.serviceClient<webots_ros::set_string>("/emitter/send");
+  emitter_send_client = n.serviceClient<webots_ros::set_string>(model_name + "/emitter/send");
   int i = 0;
   while(1)
   {
@@ -90,8 +90,9 @@ int main(int argc, char **argv)
     else
       ROS_ERROR("Failed to call service emitter_send to send data.");
     
-    emitter_send_client.shutdown();
-    time_step_client.call(time_step_srv);
   }
+
+  emitter_send_client.shutdown();
+  time_step_client.call(time_step_srv);
 
 }

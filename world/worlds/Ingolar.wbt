@@ -171,8 +171,11 @@ DEF BEACON_ROBOT_1 Robot {
   boundingObject USE BEACON_SOLID
   physics Physics {
   }
+  controller "ros"
   controllerArgs [
-    ""
+    "--name=beacon_1"
+    "--clock"
+    "--synchronize"
   ]
 }
 DEF BEACON_ROBOT_2 Robot {
