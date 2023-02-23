@@ -37,6 +37,7 @@
 #include <webots/keyboard.h>
 #include <webots/led.h>
 #include <webots/motor.h>
+#include <webots/emitter.h>
 
 #define SIGN(x) ((x) > 0) - ((x) < 0)
 #define CLAMP(value, low, high) ((value) < (low) ? (low) : ((value) > (high) ? (high) : (value)))
@@ -62,6 +63,11 @@ int main(int argc, char **argv) {
   WbDeviceTag camera_roll_motor = wb_robot_get_device("camera roll");
   WbDeviceTag camera_pitch_motor = wb_robot_get_device("camera pitch");
   // WbDeviceTag camera_yaw_motor = wb_robot_get_device("camera yaw");  // Not used in this example.
+
+  WbDeviceTag emitter = wb_robot_get_device("emitter");
+  char message_emitter[128];
+  sprintf(message_emitter, "hello%d", 3);
+
 
   // Get propeller motors and set them to velocity mode.
   WbDeviceTag front_left_motor = wb_robot_get_device("front left propeller");
@@ -178,6 +184,8 @@ int main(int argc, char **argv) {
     wb_motor_set_velocity(front_right_motor, -front_right_motor_input);
     wb_motor_set_velocity(rear_left_motor, -rear_left_motor_input);
     wb_motor_set_velocity(rear_right_motor, rear_right_motor_input);
+
+    wb_emitter_send(emitter, message_emitter, strlen(message_emitter) + 1);
   };
 
   wb_robot_cleanup();

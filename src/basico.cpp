@@ -30,6 +30,7 @@
 #include <webots_ros/node_get_type.h>
 #include <webots_ros/get_uint64.h>
 #include <webots_ros/supervisor_get_from_def.h>
+#include <webots_ros/get_float.h>
 
 // include files to use standard message types in topic
 // Webots only use basic messages type defined in ROS library
@@ -58,7 +59,9 @@ void receiverCallback(const webots_ros::StringStamped::ConstPtr &value)
 
 int main(int argc, char **argv) 
 {
-    std::string model_name = "DJI_MAVIC_2_PRO";
+    std::string model_name = "beacon_";
+    std::string robot_num = "1";
+
     //std::string model_name = "rec";
     std::string controllerName;
     std::vector<std::string> deviceList;
@@ -69,65 +72,36 @@ int main(int argc, char **argv)
     signal(SIGINT, quit);
 
     // Wait for the `ros` controller.
-    ros::service::waitForService("/robot/time_step");
+    //ros::service::waitForService("/robot/time_step");
     ros::spinOnce();
-
-    ROS_INFO("hmmmmmmm");
-
-    // call get_model services to get more general information about the robot
-    ros::ServiceClient getModelClient = n.serviceClient<webots_ros::get_string>("/robot/get_model");
-    webots_ros::get_string getModelSrv;
-
-    if (getModelClient.call(getModelSrv)) 
-    {
-        if (!getModelSrv.response.value.empty())
-        {
-            ROS_INFO("The model of this robot is %s.", getModelSrv.response.value.c_str());
-            //model_name = getModelSrv.response.value.c_str();
-            time_step_client = n.serviceClient<webots_ros::set_int>(model_name + "/robot/time_step");
-
-        }
-        else
-            ROS_ERROR("The robot doesn't seem to have a model.");
-    } 
-    else
-        ROS_ERROR("Could not get the model of this robot.");
-
-    // call deviceList service to get the list of the name of the devices available on the controller and print it
-    // the deviceListSrv object contains 2 members: request and response. Their fields are described in the corresponding .srv
-    // file
-    ros::ServiceClient deviceListClient = n.serviceClient<webots_ros::robot_get_device_list>("/robot/get_device_list");
-    webots_ros::robot_get_device_list deviceListSrv;
-
-    if (deviceListClient.call(deviceListSrv)) 
-    {
-        deviceList = deviceListSrv.response.list;
-        ROS_INFO("The controller has %lu devices availables:", deviceList.size());
-        for (unsigned int i = 0; i < deviceList.size(); i++)
-            ROS_INFO("Device [%d]: %s.", i, deviceList[i].c_str());
-    } else
-        ROS_ERROR("Failed to call service deviceList.");
 
     ros::ServiceClient set_receiver_client;
     webots_ros::set_int receiver_srv;
     ros::Subscriber sub_receiver_32;    
-    set_receiver_client = n.serviceClient<webots_ros::set_int>("/receiver/enable");
+    set_receiver_client = n.serviceClient<webots_ros::set_int>(model_name + robot_num + "/receiver/enable");
 
     ros::ServiceClient sampling_period_receiver_client;
     webots_ros::get_int sampling_period_receiver_srv;
-    sampling_period_receiver_client = n.serviceClient<webots_ros::get_int>(model_name + "/receiver/get_sampling_period");
+    sampling_period_receiver_client = n.serviceClient<webots_ros::get_int>(model_name + robot_num + "/receiver/get_sampling_period");
 
-    ROS_INFO("BLABALBALBa   ");
+    // test receiver_get_signal_strength
+    // An error message will probably appear since no signal has been sent to the receiver.
+    ros::ServiceClient receiver_get_signal_strength_client;
+    webots_ros::get_float receiver_get_signal_strength_srv;
+    receiver_get_signal_strength_client = n.serviceClient<webots_ros::get_float>(model_name + robot_num + "/receiver/get_signal_strength");
+
+
 
     receiver_srv.request.value = 32;
     if (set_receiver_client.call(receiver_srv) && receiver_srv.response.success) 
     {
         ROS_INFO("Receiver enabled.");
-        sub_receiver_32 = n.subscribe(model_name + "/receiver/data", 1, receiverCallback);
+        sub_receiver_32 = n.subscribe(model_name + robot_num + "/receiver/data", 1, receiverCallback);
         callbackCalled = false;
         
         while (sub_receiver_32.getNumPublishers() == 0 || !callbackCalled) 
         {
+            ROS_INFO("AQUIIII");
             ros::spinOnce();
             time_step_client.call(time_step_srv);
         }
@@ -142,10 +116,22 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    while (1)
+    {
+        receiver_get_signal_strength_client.call(receiver_get_signal_strength_srv);
+        if (receiver_get_signal_strength_srv.response.value != -1.0)
+            ROS_INFO("Strength of the signal is %lf.", receiver_get_signal_strength_srv.response.value);
+        else
+            ROS_INFO("No message received by emitter, impossible to get signal strength.");
+
+        sub_receiver_32.shutdown();
+        set_receiver_client.shutdown();
+        time_step_client.call(time_step_srv);
+    }
+    
     sub_receiver_32.shutdown();
     set_receiver_client.shutdown();
     time_step_client.call(time_step_srv);
 
-    while(1);
 
 }

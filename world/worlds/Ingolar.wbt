@@ -22,8 +22,8 @@ WorldInfo {
   }
 }
 Viewpoint {
-  orientation -0.12681020974793594 -0.13493995298090766 0.9827056424958571 3.8815741106689496
-  position 28.073372145491675 26.51265120375047 9.159695425801587
+  orientation -0.17516632433898377 -0.04818022348135504 0.9833592552484859 3.6758824538198005
+  position 33.05235093081658 23.842500874129772 10.017521027277228
   near 0.2
   follow "Mavic_2_PRO"
   followSmoothness 0.2
@@ -75,14 +75,11 @@ Floor {
 Robot {
   translation 9.75 10.35 0
   children [
-    Receiver {
-      translation 0 0 0.97
+    Emitter {
+      translation 0 0 0.95
       boundingObject Sphere {
         radius 0.1
       }
-      physics Physics {
-      }
-      channel 1
     }
     Shape {
       appearance PBRAppearance {
@@ -98,6 +95,9 @@ Robot {
   name "robot(1)"
   model "rec"
   controller "ros"
+  controllerArgs [
+    "--name=rec_generic"
+  ]
 }
 Wall {
   translation 0.3 0 0
@@ -113,7 +113,7 @@ Wall {
 drone_modified {
   translation 1 7.31 0.07
   rotation 0 1 0 0
-  controller "mavic2pro_patrol"
+  controller "mavic2pro"
 }
 Hotel {
   translation -27.31 0 0
@@ -125,14 +125,11 @@ UBuilding {
 DEF BEACON_ROBOT_1 Robot {
   translation 13.82 15.82 0.5
   children [
-    Emitter {
+    Receiver {
       translation 0 0 0.51
       boundingObject Sphere {
         radius 0.1
       }
-      physics Physics {
-      }
-      channel 1
     }
     DEF BEACON_SOLID Group {
       children [
@@ -174,21 +171,16 @@ DEF BEACON_ROBOT_1 Robot {
   controller "ros"
   controllerArgs [
     "--name=beacon_1"
-    "--clock"
-    "--synchronize"
   ]
 }
 DEF BEACON_ROBOT_2 Robot {
   translation 3.58 15.82 0.6
   children [
-    Emitter {
+    Receiver {
       translation 0 0 0.51
       boundingObject Sphere {
         radius 0.1
       }
-      physics Physics {
-      }
-      channel 2
     }
     DEF BEACON_SOLID Group {
       children [
@@ -226,18 +218,19 @@ DEF BEACON_ROBOT_2 Robot {
   boundingObject USE BEACON_SOLID
   physics Physics {
   }
+  controller "ros"
+  controllerArgs [
+    "--name=beacon_2"
+  ]
 }
 DEF BEACON_ROBOT_3 Robot {
   translation 15.72 7.62 0.7
   children [
-    Emitter {
+    Receiver {
       translation 0 0 0.51
       boundingObject Sphere {
         radius 0.1
       }
-      physics Physics {
-      }
-      channel 3
     }
     DEF BEACON_SOLID Group {
       children [
@@ -275,4 +268,8 @@ DEF BEACON_ROBOT_3 Robot {
   boundingObject USE BEACON_SOLID
   physics Physics {
   }
+  controller "ros"
+  controllerArgs [
+    "--name=beacon_3"
+  ]
 }

@@ -61,7 +61,7 @@ void receiverCallback(const webots_ros::StringStamped::ConstPtr &value)
 int main(int argc, char **argv) 
 {
   //std::string model_name = "DJI_MAVIC_2_PRO";
-  std::string model_name = "beacon_1";
+  std::string model_name = "rec_generic";
   std::string controllerName;
   std::vector<std::string> deviceList;
   
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
   signal(SIGINT, quit);
   
   // Wait for the `ros` controller.
-  ros::service::waitForService("/robot/time_step");
+  //ros::service::waitForService("/robot/time_step");
   ros::spinOnce();
   
   ros::ServiceClient emitter_send_client;
@@ -89,6 +89,9 @@ int main(int argc, char **argv)
       ROS_INFO("Emitter has sent data: %s", msg);
     else
       ROS_ERROR("Failed to call service emitter_send to send data.");
+
+    emitter_send_client.shutdown();
+    time_step_client.call(time_step_srv);
     
   }
 

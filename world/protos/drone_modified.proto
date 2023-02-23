@@ -58,16 +58,11 @@ Robot {
         url "meshes/Mavic2Pro/body_lenses.obj"
       }
     }
-    Receiver {
-      type                "radio"   # {"radio", "serial", "infra-red"}  
-      aperture            -1        # {-1, [0, 2*pi]}
-      channel             -1         # [-1, inf)
-      baudRate            -1        # {-1, [0, inf)}
-      byteSize            8         # [8, inf)
-      bufferSize          -1        # {-1, [0, inf)}
-      signalStrengthNoise 0         # [0, inf)
-      directionNoise      0         # [0, inf)
-      allowedChannels     [ ]       # [0, inf)
+    Emitter {
+      translation 0 0 0.95
+      boundingObject Sphere {
+        radius 0.1
+      }
     }
     DEF COMPASS Compass {
     }
