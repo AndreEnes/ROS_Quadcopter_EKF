@@ -51,12 +51,12 @@ void quit(int sig)
     exit(0);
 }
 
-void receiverCallback(const webots_ros::StringStamped::ConstPtr &value) 
-{
-    char *message = const_cast<char *>(value->data.c_str());
-    ROS_INFO("Received a message %s.", message);
-    callbackCalled = true;
-}
+//void receiverCallback(const webots_ros::StringStamped::ConstPtr &value) 
+//{
+//    char *message = const_cast<char *>(value->data.c_str());
+//   ROS_INFO("Received a message %s.", message);
+//    callbackCalled = true;
+//}
 
 int main(int argc, char **argv) 
 {
@@ -95,21 +95,21 @@ int main(int argc, char **argv)
     // An error message will probably appear since there is no packet to read
     ros::ServiceClient receiver_next_packet_client;
     webots_ros::get_bool receiver_next_packet_srv;
-    receiver_next_packet_client = n.serviceClient<webots_ros::get_bool>(model_name + "/receiver/next_packet");
+    receiver_next_packet_client = n.serviceClient<webots_ros::get_bool>(model_name + robot_num + "/receiver/next_packet");
 
     receiver_srv.request.value = 32;
     if (set_receiver_client.call(receiver_srv) && receiver_srv.response.success) 
     {
         ROS_INFO("Receiver enabled.");
-        sub_receiver_32 = n.subscribe(model_name + robot_num + "/receiver/data", 1, receiverCallback);
-        callbackCalled = false;
+        //sub_receiver_32 = n.subscribe(model_name + robot_num + "/receiver/data", 1, receiverCallback);
+        //callbackCalled = false;
         
-        while (sub_receiver_32.getNumPublishers() == 0 || !callbackCalled) 
-        {
-            ROS_INFO("AQUIIII");
-            ros::spinOnce();
-            time_step_client.call(time_step_srv);
-        }
+        //while (sub_receiver_32.getNumPublishers() == 0 || !callbackCalled) 
+        //{
+        //    ROS_INFO("AQUIIII");
+        //    ros::spinOnce();
+        //    time_step_client.call(time_step_srv);
+        //}
     } 
     else 
     {
@@ -120,22 +120,27 @@ int main(int argc, char **argv)
         
         return 1;
     }
+    receiver_next_packet_srv.request.ask = true;
 
     while (1)
     {
         receiver_get_signal_strength_client.call(receiver_get_signal_strength_srv);
         if (receiver_get_signal_strength_srv.response.value != -1.0)
+        {
             ROS_INFO("Strength of the signal is %lf.", receiver_get_signal_strength_srv.response.value);
-        else
-            ROS_INFO("No message received by emitter, impossible to get signal strength.");
-
-        if (receiver_next_packet_client.call(receiver_next_packet_srv) && receiver_next_packet_srv.response.value)
-            ROS_INFO("Next packet is ready to be read.");
-        else if (!receiver_next_packet_srv.response.value)
+            if (receiver_next_packet_client.call(receiver_next_packet_srv) && receiver_next_packet_srv.response.value){
+                //ROS_INFO("Next packet is ready to be read.");
+                ros::Duration(0.1).sleep();	
+            }
+            else if (!receiver_next_packet_srv.response.value)
             ROS_INFO("No message received by emitter, impossible to get next packet.");
-        else
-            ROS_ERROR("Failed to call service receiver_next_packet.");
-
+            else
+                ROS_ERROR("Failed to call service receiver_next_packet.");
+        }
+        else{
+            ros::Duration(0.1).sleep();	
+            //ROS_INFO("No message received by emitter, impossible to get signal strength.");
+        }
         ros::spinOnce();
     }
 

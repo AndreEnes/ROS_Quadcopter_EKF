@@ -93,6 +93,8 @@ int main(int argc, char **argv)
     emitter_send_client.shutdown();
     time_step_client.call(time_step_srv);
     
+    ros::Duration(0.2).sleep();
+    
   }
 
   emitter_send_client.shutdown();

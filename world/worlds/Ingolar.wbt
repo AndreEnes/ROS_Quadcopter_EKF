@@ -22,8 +22,8 @@ WorldInfo {
   }
 }
 Viewpoint {
-  orientation -0.17516632433898377 -0.04818022348135504 0.9833592552484859 3.6758824538198005
-  position 33.05235093081658 23.842500874129772 10.017521027277228
+  orientation -0.17516105298269805 -0.04912214294431057 0.9833135921925168 3.68571581888916
+  position 39.01670124526793 36.50362037573068 10.747542737522375
   near 0.2
   follow "Mavic_2_PRO"
   followSmoothness 0.2
@@ -75,12 +75,6 @@ Floor {
 Robot {
   translation 9.75 10.35 0
   children [
-    Emitter {
-      translation 0 0 0.95
-      boundingObject Sphere {
-        radius 0.1
-      }
-    }
     Shape {
       appearance PBRAppearance {
         baseColor 1 0 0
@@ -94,10 +88,7 @@ Robot {
   ]
   name "robot(1)"
   model "rec"
-  controller "ros"
-  controllerArgs [
-    "--name=rec_generic"
-  ]
+  controller "<none>"
 }
 Wall {
   translation 0.3 0 0
@@ -111,11 +102,31 @@ Wall {
   size 0.01 1 2.4
 }
 drone_modified {
-  translation 1 7.31 0.07
-  rotation 0 1 0 0
-  controller "mavic2pro"
+  hidden position_0_0 -5.583434803248017e-09
+  hidden linearVelocity_0 -0.05980526619770164 0.040379521800393677 1.4105384344443027e-09
+  hidden angularVelocity_0 -9.668953719642735e-08 2.9702005160606534e-08 0.00015208643864534632
+  hidden position_5_0 -2.1610651046444218e-08
+  hidden linearVelocity_5 -0.05981288499944584 0.04036176384222435 3.5323363504965145e-11
+  hidden angularVelocity_5 -9.645616146125251e-08 2.9544530150765727e-08 0.0001520318298345054
+  hidden rotation_6 0 -1 0 2.9802322387695313e-08
+  hidden position_6_0 1.0563863358065357e-07
+  hidden linearVelocity_6 -0.05981199895525812 0.040361749823787985 3.815478918696507e-10
+  hidden angularVelocity_6 -6.668738988588479e-08 1.126154083001272e-07 0.0001520317174995534
+  hidden rotation_7 1 0 0 1.0745380149674385e-07
+  hidden linearVelocity_7 -0.059810857711731114 0.040361204635594485 1.2860149823541972e-09
+  hidden angularVelocity_7 -2.690213044766262e-07 1.8512097794310427e-07 0.00015203064371556988
+  translation 7.134356306617785 19.64987058055367 0.7999489908650976
+  rotation -0.0023873375033844207 0.0010705640911049103 0.9999965772502283 2.797503912730637
   cameraSlot [
-    Emitter {
+    Robot {
+      children [
+        Emitter {
+        }
+      ]
+      controller "ros"
+      controllerArgs [
+        "--name=rec_generic"
+      ]
     }
     Camera {
       width 400
@@ -131,7 +142,8 @@ UBuilding {
   rotation 0 0 1 -0.523595307179586
 }
 DEF BEACON_ROBOT_1 Robot {
-  translation 13.82 15.82 0.5
+  translation 13.82 15.82 0.48602870966143763
+  rotation -0.47298428772051154 0.856925986973475 -0.20485047331909248 4.672588240228663e-18
   children [
     Receiver {
       translation 0 0 0.51
@@ -180,9 +192,12 @@ DEF BEACON_ROBOT_1 Robot {
   controllerArgs [
     "--name=beacon_1"
   ]
+  linearVelocity -1.9695279280317183e-17 1.1397896920290146e-18 -4.264512371276561e-09
+  angularVelocity 2.0992649778064567e-17 -5.511785386662906e-17 6.659893885867649e-18
 }
 DEF BEACON_ROBOT_2 Robot {
-  translation 3.58 15.82 0.6
+  translation 3.58 15.82 0.4860287096614374
+  rotation -0.1258933953751954 -0.08661481734887591 -0.9882553953389406 4.726222315702819e-17
   children [
     Receiver {
       translation 0 0 0.51
@@ -230,9 +245,12 @@ DEF BEACON_ROBOT_2 Robot {
   controllerArgs [
     "--name=beacon_2"
   ]
+  linearVelocity 8.08740729858579e-19 -6.361215207628582e-18 -4.26451090808287e-09
+  angularVelocity 2.9058451468049153e-17 5.409302921263151e-18 -2.0890065108155908e-17
 }
 DEF BEACON_ROBOT_3 Robot {
-  translation 15.72 7.62 0.7
+  translation 15.72 7.62 0.4860287091512727
+  rotation 0.18194248537628008 -0.8056667757467446 0.563735734607047 9.604620458931521e-18
   children [
     Receiver {
       translation 0 0 0.51
@@ -280,4 +298,6 @@ DEF BEACON_ROBOT_3 Robot {
   controllerArgs [
     "--name=beacon_3"
   ]
+  linearVelocity -1.4508681910458143e-17 -5.4717332737556135e-18 -2.650399218190826e-12
+  angularVelocity 2.081127516082014e-17 -3.410026848138497e-17 4.42708812735799e-18
 }
