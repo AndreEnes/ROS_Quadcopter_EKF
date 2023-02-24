@@ -9,7 +9,7 @@ from Beacon_sim import Beacon_sim
 import matplotlib.pyplot as plt
 
 
-def get_yaml_beacon(path = "/data/beacons.yaml"):
+def get_yaml_beacon(path = "../data/beacons.yaml"):
     #print("get position of beacons")
     if not (path is None):
         with open(path, 'r') as f:
@@ -25,7 +25,6 @@ class Beacons_EKF():
         self.Beacons , self.Beacons_num = self.read_beacon_position()
         self.dt = step_time
         self.EKF.x = array([[ init_position[0], init_position[1], init_position[2], init_speed[0], init_speed[1], init_speed[2]]]).T # x, y,z, vx,vy,vz
-        ####--------
         self.H_def_jacbiano()
         self.EKF.F= np.array([[1, 0, 0, self.dt, 0, 0],
                             [0, 1, 0, 0, self.dt, 0],
@@ -35,44 +34,41 @@ class Beacons_EKF():
                             [0, 0, 0, 0, 0, 1]])
 
         self.EKF.Q = np.diag([1, 1, 1, 1, 1, 1])*(q**2)#ekf.P = np.diag([.1, .1, .1]) #Process noise matrix
-        self.EKF.R = np.diag([1, 1, 1, 1, 1, 1])*(r**2)#Measurement noise matrix
+
+        self.EKF.R = np.eye(self.Beacons_num*2)*(r**2)#Measurement noise matrix
+        #print(self.EKF.R)
         pass
+
     def get_beacon_point(self):
         beacon_point = []
-        beacon_point.append([self.Beacons[0]['x'],self.Beacons[0]['y'],self.Beacons[0]['z']])
-        beacon_point.append([self.Beacons[1]['x'],self.Beacons[1]['y'],self.Beacons[1]['z']])
-        beacon_point.append([self.Beacons[2]['x'],self.Beacons[2]['y'],self.Beacons[2]['z']])
+        for i in range(self.Beacons_num):
+            beacon_point.append([self.Beacons[i]['x'],self.Beacons[i]['y'],self.Beacons[i]['z']])
         return beacon_point
         
     def H_def_jacbiano(self):
         x, y,z, x_vel,y_vel,z_vel  = sympy.symbols('x, y, z, x_vel,y_vel,z_vel')
         self.subs = {x: 0, y: 0, z:0, x_vel:0, y_vel:0,z_vel:0}
         self.px, self.py, self.pz, self.vx, self.vy, self.vz= x, y, z, x_vel,y_vel,z_vel  
-        #
-        equa_beacon1 = sympy.sqrt((x-self.Beacons[0]['x'])**2 + (y-self.Beacons[0]['y'])**2 + (z-self.Beacons[0]['z'])**2)
-        equa_beacon2 = sympy.sqrt((x-self.Beacons[1]['x'])**2 + (y-self.Beacons[1]['y'])**2 + (z-self.Beacons[1]['z'])**2)
-        equa_beacon3 = sympy.sqrt((x-self.Beacons[2]['x'])**2 + (y-self.Beacons[2]['y'])**2 + (z-self.Beacons[2]['z'])**2)
+        H_matriz =  []
 
-        equa_beacon_vel1 = sympy.sqrt((x-self.Beacons[0]['x']-self.dt*x_vel)**2 + (y-self.Beacons[0]['y']-self.dt*y_vel)**2 + (z-self.Beacons[0]['z']-self.dt*z_vel)**2)
-        equa_beacon_vel2 = sympy.sqrt((x-self.Beacons[1]['x']-self.dt*x_vel)**2 + (y-self.Beacons[1]['y']-self.dt*y_vel)**2 + (z-self.Beacons[1]['z']-self.dt*z_vel)**2)
-        equa_beacon_vel3 = sympy.sqrt((x-self.Beacons[2]['x']-self.dt*x_vel)**2 + (y-self.Beacons[2]['y']-self.dt*y_vel)**2 + (z-self.Beacons[2]['z']-self.dt*z_vel)**2)
+        for i in range(self.Beacons_num):
+            H_matriz.append([sympy.sqrt((x-self.Beacons[i]['x'])**2 + (y-self.Beacons[i]['y'])**2 + (z-self.Beacons[i]['z'])**2)])
         
-        H = sympy.Matrix([[equa_beacon1],
-                        [equa_beacon2],
-                        [equa_beacon3],
-                        [equa_beacon_vel1],
-                        [equa_beacon_vel2],
-                        [equa_beacon_vel3]])
+        for i in range(self.Beacons_num):
+            H_matriz.append([sympy.sqrt((x-self.Beacons[i]['x']-self.dt*x_vel)**2 + (y-self.Beacons[i]['y']-self.dt*y_vel)**2 + (z-self.Beacons[i]['z']-self.dt*z_vel)**2)])
+        H = sympy.Matrix(H_matriz)
 
         state = sympy.Matrix([ x, y, z, x_vel,y_vel,z_vel])
         self.H_j = H.jacobian(state)
+
+        pass
 
 
 
     def read_beacon_position(self):
         #here read the values of beacon from beacons.yaml
         #and retun a list of beacon position
-        Beacons_yaml = get_yaml_beacon(path = "./data/beacons.yaml")
+        Beacons_yaml = get_yaml_beacon(path = "../data/beacons.yaml")
         Beacons_num =Beacons_yaml['beacons_num']
         Beacons = []
         for c in range(0,Beacons_num) :
@@ -97,13 +93,13 @@ class Beacons_EKF():
         to state x.
         """
         Beacons_dist= []
-        
-        Beacons_dist.append(math.sqrt((x[0] - self.Beacons[0]['x'])**2+(x[1] - self.Beacons[0]['y'])**2+(x[2]- self.Beacons[0]['z'])**2))
-        Beacons_dist.append(math.sqrt((x[0] - self.Beacons[1]['x'])**2+(x[1] - self.Beacons[1]['y'])**2+(x[2] - self.Beacons[1]['z'])**2))
-        Beacons_dist.append(math.sqrt((x[0] - self.Beacons[2]['x'])**2+(x[1] - self.Beacons[2]['y'])**2+(x[2] - self.Beacons[2]['z'])**2))
-        Beacons_dist.append(math.sqrt((x[0] -self.dt*x[3] - self.Beacons[0]['x'])**2+(x[1]-self.dt*x[4] - self.Beacons[0]['y'])**2+(x[2] -self.dt*x[5]- self.Beacons[0]['z'])**2))
-        Beacons_dist.append(math.sqrt((x[0] -self.dt*x[3] - self.Beacons[1]['x'])**2+(x[1] -self.dt*x[4] - self.Beacons[1]['y'])**2+(x[2] -self.dt*x[5] - self.Beacons[1]['z'])**2))
-        Beacons_dist.append(math.sqrt((x[0] -self.dt*x[3] - self.Beacons[2]['x'])**2+(x[1] -self.dt*x[4] - self.Beacons[2]['y'])**2+(x[2] -self.dt*x[5] - self.Beacons[2]['z'])**2))        
+
+        for i in range(self.Beacons_num):
+            Beacons_dist.append(math.sqrt((x[0] - self.Beacons[i]['x'])**2+(x[1] - self.Beacons[i]['y'])**2+(x[2]- self.Beacons[i]['z'])**2))
+
+        for i in range(self.Beacons_num):
+            Beacons_dist.append(math.sqrt((x[0] -self.dt*x[3] - self.Beacons[i]['x'])**2+(x[1]-self.dt*x[4] - self.Beacons[i]['y'])**2+(x[2] -self.dt*x[5]- self.Beacons[i]['z'])**2))
+      
         return array([Beacons_dist]).T
 
 
