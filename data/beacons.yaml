@@ -1,0 +1,25 @@
+beacons_num: 3   #remember that is enumerated from 0 you have to set it manually 
+beacons:
+  beacon0:
+    name: "beacon 1" #if it's set to 0,0,0 robot will go back to start point 
+    x: 1.0
+    y: 1.0
+    z: 1.5
+
+  beacon1:
+    name: "beacon 2"
+    x: 10.0
+    y: 7.0
+    z: 1.0
+
+  beacon2:
+    name: "beacon 3"
+    x: 1.0
+    y: 5.0
+    z: 0.0   
+
+  beacon3:
+    name: "beacon 4"
+    x: 5.0
+    y: 0.0
+    z: 0.0
